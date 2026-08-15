@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import path from "node:path";
 
-export default defineConfig({
-  // El sitio se publica en GitHub Pages como project page: JuanFeDS.github.io/voluntariado/
-  base: "/voluntariado/",
+export default defineConfig(({ command }) => ({
+  // Solo en build: en dev, exigir el prefijo /voluntariado/ rompe el acceso
+  // directo a fundacion.html/damnificado.html (Vite dev server lo exige tal cual).
+  base: command === "build" ? "/voluntariado/" : "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -18,4 +19,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

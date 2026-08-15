@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solicitar ayuda — Voluntariado Bogotá</title>
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Solicitá ayuda</h1>
+      <p class="app-subtitle">
+        Si vos o tu familia necesitan ayuda, contanos qué hace falta.
+        <a href="/index.html">Volver al mapa</a>
+      </p>
+    </header>
+
+    <main class="form-page">
+      <p class="form-notice">
+        Tu solicitud queda <strong>pendiente de revisión</strong> antes de ser visible.
+        Cuando se publique, solo se muestra tu <strong>localidad aproximada</strong> y qué necesitás —
+        <strong>tu dirección exacta y tu teléfono nunca son públicos</strong>, solo los ve el equipo que coordina la ayuda.
+      </p>
+
+      <form id="damnificado-form" class="form" novalidate>
+        <label class="form-honeypot" aria-hidden="true">
+          <span>Dejar en blanco</span>
+          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <label class="form-field">
+          <span>Nombre de contacto</span>
+          <input type="text" name="nombre_contacto" maxlength="150" />
+        </label>
+
+        <label class="form-field">
+          <span>Localidad o barrio aproximado * <small>(esto sí será público)</small></span>
+          <input type="text" name="localidad_aprox" required maxlength="150" placeholder="Engativá, Kennedy, Suba..." />
+        </label>
+
+        <label class="form-field">
+          <span>Dirección exacta * <small>(privada, solo la ve el equipo coordinador)</small></span>
+          <input type="text" name="direccion_exacta" required maxlength="300" />
+        </label>
+
+        <label class="form-field">
+          <span>Teléfono de contacto <small>(privado)</small></span>
+          <input type="tel" name="telefono_contacto" maxlength="50" />
+        </label>
+
+        <label class="form-field">
+          <span>Número de personas afectadas</span>
+          <input type="number" name="numero_personas_afectadas" min="1" max="100000" />
+        </label>
+
+        <fieldset class="form-field">
+          <legend>¿Qué necesitan? *</legend>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Alimento" /> <span>Alimento</span>
+          </label>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Refugio" /> <span>Refugio</span>
+          </label>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Agua" /> <span>Agua</span>
+          </label>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Medicinas" /> <span>Medicinas</span>
+          </label>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Ropa" /> <span>Ropa</span>
+          </label>
+          <label class="form-field--checkbox">
+            <input type="checkbox" name="tipo_ayuda" value="Otro" /> <span>Otro</span>
+          </label>
+        </fieldset>
+
+        <label class="form-field">
+          <span>Urgencia</span>
+          <select name="urgencia">
+            <option value="alta">Alta</option>
+            <option value="media" selected>Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Notas</span>
+          <textarea name="notas" rows="4" maxlength="3000"></textarea>
+        </label>
+
+        <button type="submit" class="form-submit">Enviar solicitud</button>
+        <p id="damnificado-status" class="form-status" role="status"></p>
+      </form>
+    </main>
+
+    <script type="module" src="/src/pages/damnificado.ts"></script>
+  </body>
+</html>

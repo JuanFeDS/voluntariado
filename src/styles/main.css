@@ -1,15 +1,92 @@
+/* Self-hosted (subset latin, cubre español) para no depender de Google Fonts en runtime. */
+@font-face {
+  font-family: "Big Shoulders Display";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/big-shoulders-display-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Big Shoulders Display";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2");
+}
+
+/*
+  Sistema de color = sistema de triage. No hay un "azul de marca" separado:
+  cada color que aparece en la UI significa lo mismo que significa en las
+  tarjetas de estado (urgente / pendiente / estable), para que el color
+  siempre comunique, nunca decore.
+*/
 :root {
-  --color-bg: #f6f7f9;
-  --color-surface: #ffffff;
-  --color-border: #e2e5ea;
-  --color-text: #1c1f26;
-  --color-text-muted: #6b7280;
-  --color-primary: #2563eb;
-  --color-necesitan: #d64545;
-  --color-revisando: #d69a2d;
-  --color-otro: #6b7280;
-  --radius: 10px;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ink: #1c1b17;
+  --ink-soft: #55524a;
+  --paper: #f6f5f1;
+  --surface: #ffffff;
+  --line: #cbc6b8;
+
+  --urgente: #d62828;
+  --urgente-soft: #fbe4e2;
+  --pendiente: #e8940c;
+  --pendiente-soft: #fdedd2;
+  --estable: #2f6f4e;
+  --estable-soft: #e1efe6;
+
+  --radius: 4px;
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-body: "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 }
 
 * {
@@ -18,42 +95,116 @@
 
 body {
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
 }
 
+a {
+  color: var(--ink);
+}
+
+/* ---------- Header / tira de despacho ---------- */
+
 .app-header {
-  padding: 1.25rem 1.5rem;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 1.5rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 3px solid var(--urgente);
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.65rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--estable);
+  margin-right: 0.75rem;
+}
+
+.live-indicator::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--estable);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--estable) 60%, transparent);
+  animation: live-pulse 2.4s infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--estable) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--estable) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--estable) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-indicator::before {
+    animation: none;
+  }
 }
 
 .app-nav {
   display: flex;
-  gap: 1rem;
-  margin-top: 0.6rem;
-  font-size: 0.85rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .app-nav a {
-  color: var(--color-primary);
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius);
   text-decoration: none;
+  font-weight: 600;
+  border: 1px solid currentColor;
+}
+
+.app-nav a:first-child {
+  color: var(--estable);
+}
+
+.app-nav a:last-child {
+  color: var(--urgente);
 }
 
 .app-nav a:hover {
-  text-decoration: underline;
+  color: var(--ink);
+  background: var(--paper);
 }
 
 .app-subtitle {
-  margin: 0.25rem 0 0;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
+  margin: 0.3rem 0 0;
+  color: var(--paper);
+  opacity: 0.75;
+  font-size: 0.85rem;
 }
+
+.app-subtitle a {
+  color: var(--paper);
+}
+
+/* ---------- Layout ---------- */
 
 .app-layout {
   display: grid;
@@ -64,7 +215,7 @@ body {
     "list map";
   gap: 1rem;
   padding: 1rem 1.5rem;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 96px);
 }
 
 .panel--filters {
@@ -78,10 +229,12 @@ body {
 
 .panel--map {
   grid-area: map;
-  border-radius: var(--radius);
+  border: 1px solid var(--line);
   overflow: hidden;
   min-height: 300px;
 }
+
+/* ---------- Filtros ---------- */
 
 .filter-group {
   display: flex;
@@ -90,23 +243,32 @@ body {
 }
 
 .filter-button {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  border-radius: var(--radius);
   padding: 0.4rem 0.9rem;
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
 .filter-button--active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: white;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
+
+/* ---------- Toggle Lista/Mapa (mobile) ---------- */
 
 .view-toggle {
   display: none;
 }
+
+/* ---------- Tags de triage (tarjetas de la lista) ---------- */
 
 .point-list {
   list-style: none;
@@ -118,11 +280,39 @@ body {
 }
 
 .point-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 0.9rem 1rem;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 0.9rem 1rem 0.9rem 1.4rem;
   cursor: pointer;
+}
+
+/* Muesca troquelada, como una etiqueta física de triage */
+.point-card::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.point-card[data-status="necesitan"] {
+  border-left-color: var(--urgente);
+}
+
+.point-card[data-status="revisando"] {
+  border-left-color: var(--pendiente);
+}
+
+.point-card[data-status="otro"] {
+  border-left-color: var(--estable);
 }
 
 .point-card__header {
@@ -134,13 +324,19 @@ body {
 
 .point-card__header h3 {
   margin: 0;
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .point-card__address {
-  margin: 0.25rem 0;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
+  margin: 0.3rem 0;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
 }
 
 .point-card__row {
@@ -151,51 +347,73 @@ body {
 .point-card__notes {
   margin: 0.5rem 0;
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--ink-soft);
   white-space: pre-line;
 }
 
 .point-card__updated {
   margin: 0.5rem 0 0;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
 }
 
 .point-card__links {
   display: flex;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
   margin-top: 0.5rem;
   font-size: 0.8rem;
 }
 
+.point-card__links a {
+  font-weight: 600;
+}
+
 .badge {
-  border-radius: 999px;
-  padding: 0.2rem 0.6rem;
-  font-size: 0.7rem;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   white-space: nowrap;
-  color: white;
 }
 
 .badge--necesitan {
-  background: var(--color-necesitan);
+  background: var(--urgente-soft);
+  color: var(--urgente);
 }
 
 .badge--revisando {
-  background: var(--color-revisando);
+  background: var(--pendiente-soft);
+  color: var(--pendiente);
 }
 
 .badge--otro {
-  background: var(--color-otro);
+  background: var(--estable-soft);
+  color: var(--estable);
 }
 
 .list-empty {
-  color: var(--color-text-muted);
+  color: var(--ink-soft);
   font-size: 0.9rem;
 }
 
 .map-info {
+  font-family: var(--font-body);
   font-size: 0.85rem;
 }
+
+.map-info strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ---------- Formularios ---------- */
 
 .form-page {
   max-width: 560px;
@@ -212,12 +430,12 @@ body {
 }
 
 .form-notice {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--pendiente-soft);
+  border: 1px solid var(--pendiente);
   border-radius: var(--radius);
   padding: 0.9rem 1rem;
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--ink);
   margin-bottom: 1.5rem;
 }
 
@@ -232,10 +450,11 @@ body {
   flex-direction: column;
   gap: 0.35rem;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .form-field small {
-  color: var(--color-text-muted);
+  color: var(--ink-soft);
   font-weight: normal;
 }
 
@@ -245,21 +464,36 @@ body {
 .form-field input[type="number"],
 .form-field select,
 .form-field textarea {
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 0.5rem 0.6rem;
   font-size: 0.9rem;
-  font-family: inherit;
+  font-weight: 400;
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.form-field input:focus-visible,
+.form-field select:focus-visible,
+.form-field textarea:focus-visible,
+.filter-button:focus-visible,
+.view-toggle__button:focus-visible,
+.app-nav a:focus-visible,
+.form-submit:focus-visible {
+  outline: 2px solid var(--urgente);
+  outline-offset: 2px;
 }
 
 .form-field--checkbox {
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 400;
 }
 
 fieldset.form-field {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
 }
@@ -270,12 +504,16 @@ fieldset.form-field legend {
 }
 
 .form-submit {
-  background: var(--color-primary);
-  color: white;
+  background: var(--urgente);
+  color: var(--paper);
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius);
   padding: 0.7rem 1.2rem;
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   cursor: pointer;
 }
 
@@ -285,20 +523,21 @@ fieldset.form-field legend {
 }
 
 .form-status {
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   min-height: 1.2em;
 }
 
 .form-status--pending {
-  color: var(--color-text-muted);
+  color: var(--ink-soft);
 }
 
 .form-status--success {
-  color: #1a7f37;
+  color: var(--estable);
 }
 
 .form-status--error {
-  color: var(--color-necesitan);
+  color: var(--urgente);
 }
 
 @media (max-width: 900px) {
@@ -309,30 +548,35 @@ fieldset.form-field legend {
       "filters"
       "toggle"
       "content";
-    height: calc(100vh - 90px);
+    height: calc(100vh - 96px);
   }
 
   .view-toggle {
     display: flex;
     grid-area: toggle;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     overflow: hidden;
-    background: var(--color-surface);
+    background: var(--surface);
   }
 
   .view-toggle__button {
     flex: 1;
     border: none;
     background: transparent;
+    color: var(--ink-soft);
     padding: 0.6rem;
-    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     cursor: pointer;
   }
 
   .view-toggle__button--active {
-    background: var(--color-primary);
-    color: white;
+    background: var(--ink);
+    color: var(--paper);
   }
 
   .panel--list,

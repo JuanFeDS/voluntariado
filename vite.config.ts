@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import path from "node:path";
 
 export default defineConfig({
+  // El sitio se publica en GitHub Pages como project page: JuanFeDS.github.io/voluntariado/
+  base: "/voluntariado/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

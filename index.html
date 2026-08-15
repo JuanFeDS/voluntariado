@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voluntariado y donaciones en tiempo real — Bogotá</title>
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Voluntariado y donaciones — Bogotá</h1>
+      <p class="app-subtitle">Datos en vivo desde la hoja comunitaria</p>
+      <nav class="app-nav">
+        <a href="/fundacion.html">Registrar fundación / punto de acopio</a>
+        <a href="/damnificado.html">Solicitar ayuda</a>
+      </nav>
+    </header>
+
+    <main class="app-layout">
+      <section class="panel panel--filters" id="filters"></section>
+      <div class="view-toggle" id="view-toggle" role="tablist" aria-label="Cambiar entre lista y mapa"></div>
+      <section class="panel panel--list" id="list" aria-label="Listado de puntos"></section>
+      <section class="panel panel--map" id="map" aria-label="Mapa de puntos"></section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

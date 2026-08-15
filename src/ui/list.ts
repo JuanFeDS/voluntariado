@@ -1,5 +1,6 @@
 import type { HelpPoint } from "@/types";
-import { escapeHtml, sanitizeHttpUrl } from "@/utils/html";
+import { escapeHtml } from "@/utils/html";
+import { statusVariant, renderLinksHtml, hasCoords } from "@/utils/pointFormat";
 
 export interface ListController {
   onSelect(handler: (point: HelpPoint) => void): void;
@@ -38,7 +39,8 @@ export function renderList(container: HTMLElement, points: HelpPoint[]): ListCon
       ${point.funcionesVoluntarios ? `<p class="point-card__row"><strong>Funciones:</strong> ${escapeHtml(point.funcionesVoluntarios)}</p>` : ""}
       ${point.notas ? `<p class="point-card__notes">${escapeHtml(point.notas)}</p>` : ""}
       <p class="point-card__updated">Actualizado: ${escapeHtml(point.horaActualizacion || "sin dato")}</p>
-      ${renderLinks(point)}
+      ${renderLinksHtml(point)}
+      ${hasCoords(point) ? `<button type="button" class="point-card__map-link">Ver en el mapa →</button>` : ""}
     `;
 
     item.addEventListener("click", () => handlers.forEach((handler) => handler(point)));
@@ -47,30 +49,4 @@ export function renderList(container: HTMLElement, points: HelpPoint[]): ListCon
 
   container.appendChild(list);
   return { onSelect: (handler) => handlers.push(handler) };
-}
-
-function renderLinks(point: HelpPoint): string {
-  const links = [
-    point.linkInscripcion && { href: point.linkInscripcion, label: "Inscripción" },
-    point.grupoWhatsapp && { href: point.grupoWhatsapp, label: "WhatsApp" },
-    point.instagram && { href: point.instagram, label: "Instagram" },
-  ]
-    .filter((link): link is { href: string; label: string } => Boolean(link))
-    .map((link) => ({ ...link, href: sanitizeHttpUrl(link.href) }))
-    .filter((link): link is { href: string; label: string } => link.href !== null);
-
-  if (links.length === 0) return "";
-
-  const anchors = links
-    .map((link) => `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
-    .join("");
-
-  return `<div class="point-card__links">${anchors}</div>`;
-}
-
-function statusVariant(status: string): "necesitan" | "revisando" | "otro" {
-  const normalized = status.trim().toUpperCase();
-  if (normalized === "SI") return "necesitan";
-  if (normalized.startsWith("REVISANDO")) return "revisando";
-  return "otro";
 }

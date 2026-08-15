@@ -358,7 +358,7 @@ a {
   color: var(--ink-soft);
 }
 
-.point-card__links {
+.point-links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 0.9rem;
@@ -366,8 +366,24 @@ a {
   font-size: 0.8rem;
 }
 
-.point-card__links a {
+.point-links a {
   font-weight: 600;
+}
+
+.point-card__map-link {
+  display: none;
+  margin-top: 0.7rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .badge {
@@ -405,6 +421,33 @@ a {
 .map-info {
   font-family: var(--font-body);
   font-size: 0.85rem;
+  max-width: 240px;
+}
+
+.map-info__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.map-info__address {
+  margin: 0.3rem 0;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.map-info__row {
+  margin: 0.25rem 0;
+}
+
+.map-info__notes {
+  margin: 0.4rem 0;
+  color: var(--ink-soft);
+  white-space: pre-line;
+  max-height: 90px;
+  overflow-y: auto;
 }
 
 .map-info strong {
@@ -541,6 +584,10 @@ fieldset.form-field legend {
 }
 
 @media (max-width: 900px) {
+  .point-card__map-link {
+    display: inline-block;
+  }
+
   .app-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;

@@ -2,6 +2,8 @@ export type MobileView = "list" | "map";
 
 export interface ViewToggleController {
   onChange(handler: (view: MobileView) => void): void;
+  /** Sincroniza los botones cuando la vista cambia desde otro lugar (ej. "Ver en el mapa" de una tarjeta). */
+  setActiveView(view: MobileView): void;
 }
 
 /**
@@ -26,7 +28,11 @@ export function renderViewToggle(container: HTMLElement): ViewToggleController {
     return button;
   });
 
-  buttons[0].classList.add("view-toggle__button--active");
+  function setActiveView(view: MobileView): void {
+    buttons.forEach((button) => button.classList.toggle("view-toggle__button--active", button.dataset.view === view));
+  }
+
+  setActiveView("list");
 
   const handlers: ((view: MobileView) => void)[] = [];
 
@@ -35,7 +41,7 @@ export function renderViewToggle(container: HTMLElement): ViewToggleController {
     if (!(target instanceof HTMLButtonElement)) return;
 
     const view = target.dataset.view as MobileView;
-    buttons.forEach((button) => button.classList.toggle("view-toggle__button--active", button === target));
+    setActiveView(view);
     handlers.forEach((handler) => handler(view));
   });
 
@@ -43,5 +49,6 @@ export function renderViewToggle(container: HTMLElement): ViewToggleController {
     onChange(handler) {
       handlers.push(handler);
     },
+    setActiveView,
   };
 }

@@ -1,0 +1,1219 @@
+<title>Especificación funcional — Registro de necesidades humanitarias</title>
+<style>
+  :root {
+    --ground:      #F3F4F1;
+    --surface:     #FBFBF9;
+    --surface-2:   #EAECE7;
+    --ink:         #171E1C;
+    --ink-2:       #3C4744;
+    --ink-3:       #6B7873;
+    --rule:        #D5D9D2;
+    --rule-soft:   #E3E6E0;
+    --petrol:      #0E5C5B;
+    --petrol-soft: #DCEAE8;
+    --clay:        #A03A22;
+    --clay-soft:   #F6E1DA;
+    --amber:       #96660F;
+    --amber-soft:  #F7EBD5;
+    --moss:        #3F6B32;
+    --moss-soft:   #E2EDDC;
+    --shadow:      0 1px 2px rgba(23,30,28,.06), 0 8px 24px -12px rgba(23,30,28,.14);
+
+    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans:  ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0F1413;
+      --surface:     #161D1B;
+      --surface-2:   #1E2725;
+      --ink:         #E7EBE8;
+      --ink-2:       #B4BEBA;
+      --ink-3:       #84938E;
+      --rule:        #2C3735;
+      --rule-soft:   #232C2A;
+      --petrol:      #63BDB6;
+      --petrol-soft: #16302F;
+      --clay:        #E08063;
+      --clay-soft:   #33201A;
+      --amber:       #D9A249;
+      --amber-soft:  #302617;
+      --moss:        #8FC07E;
+      --moss-soft:   #1C2A18;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0F1413;
+    --surface:     #161D1B;
+    --surface-2:   #1E2725;
+    --ink:         #E7EBE8;
+    --ink-2:       #B4BEBA;
+    --ink-3:       #84938E;
+    --rule:        #2C3735;
+    --rule-soft:   #232C2A;
+    --petrol:      #63BDB6;
+    --petrol-soft: #16302F;
+    --clay:        #E08063;
+    --clay-soft:   #33201A;
+    --amber:       #D9A249;
+    --amber-soft:  #302617;
+    --moss:        #8FC07E;
+    --moss-soft:   #1C2A18;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    gap: 56px;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px 120px;
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 40px 0;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  nav p {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 14px;
+  }
+  nav ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+  nav a {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 6px;
+    padding: 5px 8px 5px 0;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  nav a span { font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding-top: 1px; }
+  nav a:hover { color: var(--petrol); background: var(--surface-2); }
+  nav a:focus-visible { outline: 2px solid var(--petrol); outline-offset: 1px; }
+
+  /* ---------- masthead ---------- */
+  header.masthead { padding: 72px 0 40px; border-bottom: 1px solid var(--rule); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--petrol);
+    margin: 0 0 20px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(34px, 4.6vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+  }
+  .standfirst {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin: 0 0 32px;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .meta-grid div { background: var(--ground); padding: 12px 14px; }
+  .meta-grid dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 4px;
+  }
+  .meta-grid dd { margin: 0; font-size: 14px; font-weight: 500; }
+
+  /* ---------- sections ---------- */
+  section { padding-top: 60px; scroll-margin-top: 24px; }
+  h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin: 0 0 8px;
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    align-items: baseline;
+  }
+  h2 .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--petrol);
+  }
+  .sec-intro { color: var(--ink-2); max-width: 68ch; margin: 0 0 28px 42px; }
+  h3 {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: .005em;
+    margin: 36px 0 10px;
+    text-wrap: balance;
+  }
+  h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin: 26px 0 10px;
+  }
+  p { max-width: 68ch; margin: 0 0 16px; }
+  ul, ol.body-list { max-width: 68ch; padding-left: 20px; margin: 0 0 16px; }
+  li { margin-bottom: 7px; }
+  strong { font-weight: 650; }
+  a { color: var(--petrol); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  code {
+    font-family: var(--mono);
+    font-size: .875em;
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ---------- callouts ---------- */
+  .note {
+    border-left: 3px solid var(--rule);
+    background: var(--surface);
+    padding: 16px 20px;
+    margin: 0 0 20px;
+    max-width: 68ch;
+    box-shadow: var(--shadow);
+  }
+  .note > :last-child { margin-bottom: 0; }
+  .note .tag {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .note.critical { border-left-color: var(--clay); }
+  .note.critical .tag { color: var(--clay); }
+  .note.warn { border-left-color: var(--amber); }
+  .note.warn .tag { color: var(--amber); }
+  .note.info { border-left-color: var(--petrol); }
+  .note.info .tag { color: var(--petrol); }
+
+  /* ---------- tables ---------- */
+  .scroller { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 560px; }
+  caption {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+  }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.id, th.id { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; color: var(--petrol); }
+  td.num-col { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- pills ---------- */
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .p-crit { background: var(--clay-soft);   color: var(--clay); }
+  .p-high { background: var(--amber-soft);  color: var(--amber); }
+  .p-med  { background: var(--petrol-soft); color: var(--petrol); }
+  .p-low  { background: var(--surface-2);   color: var(--ink-3); }
+  .p-ok   { background: var(--moss-soft);   color: var(--moss); }
+
+  /* ---------- figure ---------- */
+  figure { margin: 0 0 24px; border: 1px solid var(--rule); background: var(--surface); box-shadow: var(--shadow); }
+  .fig-head { padding: 13px 18px; border-bottom: 1px solid var(--rule); background: var(--surface-2); }
+  .fig-head b { font-size: 13px; display: block; }
+  .fig-head span { font-size: 12px; color: var(--ink-3); }
+  .fig-body { padding: 18px; overflow-x: auto; }
+  figcaption { padding: 13px 18px; border-top: 1px solid var(--rule-soft); font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+  svg { display: block; }
+  .sv-rule    { stroke: var(--rule); }
+  .sv-ring    { fill: none; stroke: var(--petrol); stroke-dasharray: 3 4; opacity: .55; }
+  .sv-surface { stroke: var(--ink-2); stroke-width: 1.5; }
+  .sv-ray     { stroke: var(--ink-3); stroke-width: .75; opacity: .45; }
+  .sv-label   { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+  .sv-muted   { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-3); }
+  .sv-band    { font-family: var(--mono); font-size: 9.5px; fill: var(--petrol); }
+
+  /* ---------- role cards ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 14px; margin-bottom: 22px; }
+  .card { border: 1px solid var(--rule); background: var(--surface); padding: 16px 18px; box-shadow: var(--shadow); }
+  .card h5 { margin: 0 0 3px; font-size: 14.5px; font-weight: 650; }
+  .card .role-id { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--petrol); display: block; margin-bottom: 9px; }
+  .card p { font-size: 13px; color: var(--ink-2); margin: 0 0 10px; max-width: none; }
+  .card ul { font-size: 12.5px; padding-left: 16px; margin: 0; color: var(--ink-2); max-width: none; }
+  .card li { margin-bottom: 4px; }
+
+  /* ---------- misc ---------- */
+  .rule-break { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+  .kv { font-family: var(--mono); font-size: 12.5px; line-height: 1.9; }
+  .footer-note { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3); }
+  .footer-note a { color: var(--ink-3); }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; gap: 0; padding: 0 22px 80px; }
+    nav { position: static; max-height: none; padding: 32px 0 0; border-bottom: 1px solid var(--rule); }
+    nav ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; padding-bottom: 20px; }
+    header.masthead { padding-top: 40px; }
+  }
+</style>
+
+<div class="shell">
+
+  <nav aria-label="Contenido">
+    <p>Contenido</p>
+    <ol>
+      <li><a href="#s1"><span>01</span>Evento y evidencia</a></li>
+      <li><a href="#s2"><span>02</span>Problema y objetivos</a></li>
+      <li><a href="#s3"><span>03</span>Actores y roles</a></li>
+      <li><a href="#s4"><span>04</span>Elegibilidad geográfica</a></li>
+      <li><a href="#s5"><span>05</span>Catálogo de necesidades</a></li>
+      <li><a href="#s6"><span>06</span>Modelo de datos</a></li>
+      <li><a href="#s7"><span>07</span>Flujos funcionales</a></li>
+      <li><a href="#s8"><span>08</span>Cobertura y equidad</a></li>
+      <li><a href="#s9"><span>09</span>Seguridad</a></li>
+      <li><a href="#s10"><span>10</span>Privacidad y ley</a></li>
+      <li><a href="#s11"><span>11</span>No funcionales</a></li>
+      <li><a href="#s12"><span>12</span>Métricas</a></li>
+      <li><a href="#s13"><span>13</span>Fases</a></li>
+      <li><a href="#s14"><span>14</span>Riesgos abiertos</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="masthead">
+      <p class="eyebrow">Especificación funcional · Versión 0.1 · Borrador para revisión</p>
+      <h1>Registro comunitario de necesidades humanitarias</h1>
+      <p class="standfirst">
+        Un registro de las necesidades de ayuda humanitaria de los hogares afectados por el sismo
+        del 10 de agosto de 2026, y un tablero que le permite a instituciones y fundaciones ver
+        dónde se está concentrando la ayuda y dónde no llega, para poder distribuirla de forma
+        equitativa y no solo en las ciudades principales.
+      </p>
+      <dl class="meta-grid">
+        <div><dt>Evento</dt><dd>Sismo M 7.4 — Chocó</dd></div>
+        <div><dt>Fecha del evento</dt><dd>10 ago 2026, 07:34</dd></div>
+        <div><dt>Documento</dt><dd>12 ago 2026</dd></div>
+        <div><dt>Estado</dt><dd>Pendiente de aprobación</dd></div>
+      </dl>
+    </header>
+
+    <!-- ============ 1 ============ -->
+    <section id="s1">
+      <h2><span class="num">01</span>El evento y lo que la evidencia obliga a cambiar</h2>
+      <p class="sec-intro">
+        Los parámetros del sismo y los reportes de terreno de las primeras 48 horas no son
+        contexto de fondo: determinan tres decisiones de diseño que serían equivocadas si se
+        tomaran a ciegas.
+      </p>
+
+      <h4>Parámetros del evento</h4>
+      <div class="scroller">
+        <table>
+          <caption>Datos del Servicio Geológico Colombiano y reportes oficiales</caption>
+          <tbody>
+            <tr><th scope="row">Magnitud</th><td class="num-col">7.4</td><td>Revisada al alza desde 6.7 en el reporte inicial.</td></tr>
+            <tr><th scope="row">Epicentro</th><td class="num-col">4.99 N, −76.29 O</td><td>≈ 12 km de San José del Palmar, Chocó.</td></tr>
+            <tr><th scope="row">Profundidad</th><td class="num-col">103 km</td><td>Sismo profundo. Algunos reportes citan 96 km.</td></tr>
+            <tr><th scope="row">Hora local</th><td class="num-col">07:34:27</td><td>12:34:27 UTC, lunes 10 de agosto.</td></tr>
+            <tr><th scope="row">Municipios con reporte</th><td class="num-col">21+</td><td>9 en Chocó, 8 en Caldas, 2 en Valle, 2 en Risaralda, más localidades del Quindío.</td></tr>
+            <tr><th scope="row">Alerta roja</th><td>Pereira, Cali, Quibdó, Manizales, Armenia</td><td>Principales centros urbanos con daño estructural.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Hallazgo 1 — La profundidad rompe el modelo de radio simple</h3>
+      <p>
+        A 103 km de profundidad, la distancia real de un municipio a la fuente sísmica está
+        dominada por la profundidad, no por la distancia en el mapa. San José del Palmar, a 12 km
+        del epicentro, está a <strong>103.7 km del hipocentro</strong>. Nóvita, a 36 km del
+        epicentro, está a <strong>109 km</strong> — apenas cinco kilómetros más lejos de la fuente.
+        Un radio medido sobre el mapa crea una falsa precisión: ordena por una diferencia que
+        físicamente casi no existe.
+      </p>
+      <p>
+        La consecuencia práctica: el motor debe calcular <strong>distancia hipocentral</strong>, y
+        aun así la distancia por sí sola no basta. Pereira, Armenia y Manizales están en alerta
+        roja pese a quedar en la banda intermedia, porque el daño ahí lo explican el tipo de suelo
+        y la vulnerabilidad constructiva, no la cercanía. El modelo geométrico debe estar
+        <em>subordinado</em> a la lista oficial de municipios afectados, nunca al revés.
+        Detalle en la <a href="#s4">sección 04</a>.
+      </p>
+
+      <h3>Hallazgo 2 — Donde más se necesita, no hay señal</h3>
+      <div class="note critical">
+        <span class="tag">Contradice el requisito de verificación por SMS</span>
+        <p>
+          El alcalde de San José del Palmar reportó el municipio incomunicado: derrumbes
+          bloquearon la vía principal hacia el Valle del Cauca y los caminos veredales, la señal
+          telefónica es intermitente y hubo interrupción del servicio eléctrico. La ayuda ha
+          tenido que entrar por aire. Varias veredas siguen sin comunicación ni acceso terrestre.
+        </p>
+        <p>
+          Un registro que exija código OTP por SMS <strong>excluye exactamente a la población que
+          el proyecto existe para alcanzar</strong>. La verificación por teléfono se mantiene como
+          vía principal, pero deja de ser la única: el registro asistido por tercero
+          (<a href="#s3">rol R2</a>) y la captura offline con sincronización diferida
+          (<a href="#s7">RF-04</a>) pasan de mejora futura a requisito de la primera versión.
+        </p>
+      </div>
+
+      <h3>Hallazgo 3 — La ubicación precisa es un dato de riesgo, no solo de privacidad</h3>
+      <div class="note critical">
+        <span class="tag">Principio de acción sin daño</span>
+        <p>
+          San José del Palmar es un municipio con presencia histórica del ELN. Una base de datos
+          que asocie nombre, composición del hogar y coordenadas exactas de familias vulnerables
+          en territorio con actores armados es, si se filtra, un insumo de selección de víctimas.
+        </p>
+        <p>
+          Esto eleva el manejo de ubicación por encima del estándar de cumplimiento: la coordenada
+          exacta se almacena cifrada y <strong>nunca se expone en listados</strong>. Las
+          organizaciones ven la ubicación degradada a una celda de ~1 km hasta que asumen un
+          compromiso de entrega verificable. Ver <a href="#s9">RS-06</a> y <a href="#s9">RS-07</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 2 ============ -->
+    <section id="s2">
+      <h2><span class="num">02</span>Problema, objetivos y límites</h2>
+      <p class="sec-intro">
+        Pasada la fase de rescate, la ayuda humanitaria se concentra donde hay albergues visibles y
+        cobertura mediática. El problema no es escasez de donaciones: es que nadie puede ver, con
+        datos, qué se necesita fuera de los cascos urbanos principales ni cuánto ha llegado
+        realmente a cada municipio.
+      </p>
+
+      <h3>Objetivos</h3>
+      <ol class="body-list">
+        <li><strong>Saber qué se necesita, en unidades concretas.</strong> No «ayuda»: 60 colchonetas, 25 kits de aseo familiar, 12 tratamientos de hipertensión.</li>
+        <li><strong>Hacer visible la demanda dispersa.</strong> Que una vereda de 40 familias tenga la misma legibilidad estadística que un albergue urbano de 400.</li>
+        <li><strong>Medir la inequidad territorial.</strong> Mostrar la brecha entre lo que un municipio necesita y lo que ha recibido, para que sea imposible ignorarla.</li>
+        <li><strong>Dar a las instituciones dónde actuar.</strong> Que una fundación con recursos disponibles pueda decidir su destino con evidencia y no por cercanía o visibilidad.</li>
+        <li><strong>Dar a las campañas de donación un destino verificable.</strong> Que un creador de contenido que moviliza donaciones pueda ver, sin crear una cuenta, a dónde no está llegando nada — y dirigir su audiencia hacia allá.</li>
+        <li><strong>Reducir duplicación.</strong> Que dos fundaciones no lleven lo mismo al mismo sitio mientras otro queda sin nada.</li>
+        <li><strong>Proteger a quien se registra.</strong> Que registrarse nunca aumente el riesgo del hogar.</li>
+      </ol>
+
+      <h3>No objetivos</h3>
+      <ul>
+        <li><strong>No atiende emergencias ni urgencias médicas.</strong> No es un canal de respuesta inmediata y no debe presentarse como tal.</li>
+        <li>No sustituye el censo oficial de damnificados de la UNGRD ni genera derechos frente al Estado. Debe decirlo de forma explícita al usuario.</li>
+        <li>No gestiona dinero, donaciones monetarias ni pasarelas de pago.</li>
+        <li>No hace logística de transporte ni rastreo de vehículos. Conecta la necesidad con la institución; la operación la ejecuta la institución.</li>
+        <li>No publica datos personales, ni siquiera agregados, sin control de acceso.</li>
+      </ul>
+
+      <div class="note warn">
+        <span class="tag">Supuesto que debe validarse antes de construir</span>
+        <p>
+          Esta plataforma solo sirve si al menos dos o tres organizaciones con capacidad real de
+          movilizar carga se comprometen a usarla. Sin ese lado de la oferta, se convierte en un
+          registro de necesidades que nadie atiende — y eso causa daño: genera expectativa en
+          familias que ya están en crisis. <strong>Conseguir esos aliados es prerrequisito del
+          lanzamiento público</strong>, no una actividad paralela.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 3 ============ -->
+    <section id="s3">
+      <h2><span class="num">03</span>Actores y roles</h2>
+      <p class="sec-intro">
+        Seis roles. El permiso por defecto es «nada»: todo acceso a datos personales se concede
+        de forma explícita, es temporal y queda registrado.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h5>Solicitante</h5><span class="role-id">R1 · Autenticado por OTP</span>
+          <p>Persona afectada que registra las necesidades de su hogar.</p>
+          <ul>
+            <li>Crea y edita una sola solicitud de hogar</li>
+            <li>Ve el estado de su solicitud</li>
+            <li>Confirma o rechaza la entrega recibida</li>
+            <li>Ejerce derechos de datos y revoca autorización</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Registrador comunitario</h5><span class="role-id">R2 · Verificado por admin</span>
+          <p>Líder de JAC, docente, promotor de salud o párroco que registra hogares sin conectividad.</p>
+          <ul>
+            <li>Registra hogares en nombre de terceros, con constancia de consentimiento</li>
+            <li>Trabaja offline y sincroniza al recuperar señal</li>
+            <li>Limitado a su municipio asignado</li>
+            <li>Cada registro queda trazado a su identidad</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Organización</h5><span class="role-id">R3 · Verificada por NIT</span>
+          <p>Fundación, ONG o colectivo que moviliza y entrega ayuda.</p>
+          <ul>
+            <li>Consulta el tablero de cobertura y la brecha por municipio</li>
+            <li>Asume compromisos de entrega sobre lotes de solicitudes</li>
+            <li>Solo al comprometerse accede a contacto y ubicación exacta</li>
+            <li>Reporta entregas con evidencia</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Coordinador de zona</h5><span class="role-id">R4 · Designado</span>
+          <p>Enlace territorial que resuelve conflictos y valida casos dudosos.</p>
+          <ul>
+            <li>Revisa la cola de solicitudes fuera de cobertura automática</li>
+            <li>Resuelve posibles duplicados</li>
+            <li>Reasigna compromisos incumplidos</li>
+            <li>Verifica registradores comunitarios</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Administrador</h5><span class="role-id">R5 · MFA obligatorio</span>
+          <p>Operador de la plataforma. El rol más restringido en número de personas.</p>
+          <ul>
+            <li>Define el evento sísmico, bandas y lista oficial de municipios</li>
+            <li>Verifica y suspende organizaciones</li>
+            <li>Atiende peticiones de habeas data</li>
+            <li>No puede exportar PII masiva sin doble autorización</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Campaña o creador</h5><span class="role-id">R7 · Sin autenticación</span>
+          <p>Creador de contenido, medio o colectivo que impulsa una campaña de donación y decide hacia dónde dirigirla.</p>
+          <ul>
+            <li>Consulta la vista pública de cobertura sin crear cuenta</li>
+            <li>Obtiene tarjetas compartibles con los municipios desatendidos</li>
+            <li>Enlaza a un municipio o categoría específica</li>
+            <li>Nunca accede a datos personales, ni siquiera agregados finos</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Auditor</h5><span class="role-id">R6 · Solo lectura</span>
+          <p>Rol de control interno o veeduría externa.</p>
+          <ul>
+            <li>Lee la bitácora de auditoría completa</li>
+            <li>Ve estadísticas agregadas y anonimizadas</li>
+            <li>Sin acceso a datos personales identificables</li>
+            <li>No puede modificar nada</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note info">
+        <span class="tag">Regla transversal</span>
+        <p>
+          Ningún rol puede consultar la base completa. Toda consulta de una organización está
+          acotada por zona geográfica y por categoría de necesidad, devuelve un máximo de
+          resultados por página y queda registrada con el filtro exacto que se usó. Un patrón de
+          consulta que parezca extracción masiva dispara alerta automática y suspensión preventiva.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 4 ============ -->
+    <section id="s4">
+      <h2><span class="num">04</span>Motor de elegibilidad geográfica</h2>
+      <p class="sec-intro">
+        Determina si una ubicación corresponde a zona afectada. Combina dos fuentes: geometría
+        respecto del hipocentro y lista oficial de municipios. La regla de composición es
+        deliberadamente asimétrica — la geometría puede incluir, pero nunca excluir.
+      </p>
+
+      <figure>
+        <div class="fig-head">
+          <b>Por qué la profundidad domina la distancia</b>
+          <span>Corte vertical. Bandas de distancia hipocentral constante desde el foco a 103 km.</span>
+        </div>
+        <div class="fig-body">
+          <svg viewBox="0 0 780 400" width="780" height="400" role="img"
+               aria-label="Corte vertical del terreno mostrando el hipocentro a 103 kilómetros de profundidad y tres arcos de distancia hipocentral constante que cruzan la superficie, ubicando San José del Palmar, Pereira, Quibdó, Cali y Bogotá en distintas bandas.">
+            <defs>
+              <clipPath id="belowGround"><rect x="0" y="60" width="780" height="340"/></clipPath>
+            </defs>
+
+            <!-- rings -->
+            <g clip-path="url(#belowGround)">
+              <circle class="sv-ring" cx="50" cy="328" r="312"/>
+              <circle class="sv-ring" cx="50" cy="328" r="416"/>
+              <circle class="sv-ring" cx="50" cy="328" r="572"/>
+            </g>
+
+            <!-- surface -->
+            <line class="sv-surface" x1="30" y1="60" x2="770" y2="60"/>
+
+            <!-- hypocenter -->
+            <line class="sv-ray" x1="50" y1="60" x2="50" y2="328" stroke-dasharray="2 3"/>
+            <circle cx="50" cy="328" r="4.5" fill="var(--clay)"/>
+            <text class="sv-label" x="62" y="325" fill="var(--clay)">Hipocentro</text>
+            <text class="sv-muted" x="62" y="339">103 km de profundidad</text>
+
+            <!-- rays to cities -->
+            <line class="sv-ray" x1="50" y1="328" x2="81" y2="60"/>
+            <line class="sv-ray" x1="50" y1="328" x2="229" y2="60"/>
+            <line class="sv-ray" x1="50" y1="328" x2="502" y2="60"/>
+
+            <!-- city ticks -->
+            <g fill="var(--ink)">
+              <circle cx="81"  cy="60" r="3"/>
+              <circle cx="229" cy="60" r="3"/>
+              <circle cx="279" cy="60" r="3"/>
+              <circle cx="502" cy="60" r="3"/>
+              <circle cx="695" cy="60" r="3"/>
+            </g>
+
+            <!-- city labels -->
+            <text class="sv-label" x="81"  y="34" text-anchor="middle">S. J. del Palmar</text>
+            <text class="sv-muted" x="81"  y="46" text-anchor="middle">12 km · hip. 104</text>
+
+            <text class="sv-label" x="223" y="20" text-anchor="middle">Pereira</text>
+            <text class="sv-muted" x="223" y="32" text-anchor="middle">69 km · hip. 124</text>
+
+            <text class="sv-label" x="292" y="42" text-anchor="middle">Quibdó</text>
+            <text class="sv-muted" x="292" y="54" text-anchor="start">88 · hip. 135</text>
+
+            <text class="sv-label" x="502" y="34" text-anchor="middle">Cali</text>
+            <text class="sv-muted" x="502" y="46" text-anchor="middle">174 km · hip. 203</text>
+
+            <text class="sv-label" x="695" y="34" text-anchor="middle">Bogotá</text>
+            <text class="sv-muted" x="695" y="46" text-anchor="middle">248 km · hip. 269</text>
+
+            <!-- band labels -->
+            <text class="sv-band" x="120" y="86">A — alta</text>
+            <text class="sv-band" x="238" y="86">B — media</text>
+            <text class="sv-band" x="392" y="86">C — baja</text>
+            <text class="sv-band" x="580" y="86">D — revisión manual</text>
+
+            <!-- scale -->
+            <line class="sv-rule" x1="50" y1="380" x2="310" y2="380"/>
+            <line class="sv-rule" x1="50" y1="376" x2="50" y2="384"/>
+            <line class="sv-rule" x1="310" y1="376" x2="310" y2="384"/>
+            <text class="sv-muted" x="180" y="373" text-anchor="middle">100 km · escala real, ejes iguales</text>
+          </svg>
+        </div>
+        <figcaption>
+          Los arcos son círculos verdaderos centrados en el foco. Nótese cuánto se abre la banda A
+          sobre la superficie: cubre 61 km de radio en el mapa, porque a esa profundidad acercarse
+          al epicentro casi no acerca a la fuente. Bogotá, a 248 km, cae fuera de cobertura
+          automática y pasa a revisión manual en lugar de ser rechazada.
+        </figcaption>
+      </figure>
+
+      <h3>Bandas</h3>
+      <div class="scroller">
+        <table>
+          <caption>Clasificación por distancia hipocentral · d_hip = √(d_epi² + 103²)</caption>
+          <thead>
+            <tr><th>Banda</th><th>d hipocentral</th><th>d epicentral equiv.</th><th>Nivel base</th><th>Comportamiento</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="pill p-crit">A</span></td><td class="num-col">≤ 120 km</td><td class="num-col">≤ 61 km</td><td>Alto</td><td>Registro directo, prioridad máxima por defecto.</td></tr>
+            <tr><td><span class="pill p-high">B</span></td><td class="num-col">120 – 160 km</td><td class="num-col">61 – 122 km</td><td>Medio</td><td>Registro directo.</td></tr>
+            <tr><td><span class="pill p-med">C</span></td><td class="num-col">160 – 220 km</td><td class="num-col">122 – 194 km</td><td>Bajo</td><td>Registro directo, exige descripción del daño.</td></tr>
+            <tr><td><span class="pill p-low">D</span></td><td class="num-col">&gt; 220 km</td><td class="num-col">&gt; 194 km</td><td>Sin asignar</td><td>Cola de revisión manual. <strong>Nunca rechazo automático.</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Regla de composición</h3>
+      <div class="note info">
+        <span class="tag">Regla RF-06</span>
+        <p class="kv" style="margin-bottom:12px">
+          nivel_final = MÁXIMO( nivel_por_banda , nivel_por_lista_oficial )
+        </p>
+        <p>
+          Si el municipio está en la lista oficial de la UNGRD, ese nivel manda aunque la geometría
+          diga menos. Pereira cae en banda B, pero está en alerta roja: queda en nivel alto. La
+          geometría solo puede subir un caso que la lista no contempla — por ejemplo una vereda
+          aislada de un municipio que nadie reportó todavía. <strong>Ninguna de las dos fuentes
+          puede degradar a la otra.</strong>
+        </p>
+      </div>
+
+      <h4>Requisitos</h4>
+      <div class="scroller">
+        <table>
+          <thead><tr><th class="id">ID</th><th>Requisito</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr><td class="id">RF-01</td><td>Capturar ubicación por GPS del dispositivo, con precisión declarada en metros.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-02</td><td>Alternativa sin GPS: seleccionar departamento → municipio → centro poblado o vereda desde catálogo DIVIPOLA, y opcionalmente marcar punto en mapa.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-03</td><td>Calcular distancia hipocentral con fórmula de Haversine más corrección de profundidad, contra el evento activo.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-04</td><td>Capturar ubicación sin conexión y sincronizarla al recuperar señal, conservando la marca de tiempo original.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-05</td><td>Soportar varios eventos sísmicos activos, incluidas réplicas con foco distinto.</td><td><span class="pill p-med">Debería</span></td></tr>
+            <tr><td class="id">RF-06</td><td>Componer nivel final tomando el máximo entre banda geométrica y lista oficial.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-07</td><td>Toda solicitud fuera de cobertura entra a cola de revisión con SLA de 48 horas, con aviso claro al solicitante de que su caso está en revisión y no rechazado.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-08</td><td>Administrador edita bandas, epicentro, profundidad y lista de municipios sin desplegar código.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-09</td><td>Registrar la fuente y fecha de cada dato oficial cargado, para trazabilidad.</td><td><span class="pill p-med">Debería</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 5 ============ -->
+    <section id="s5">
+      <h2><span class="num">05</span>Catálogo de necesidades</h2>
+      <p class="sec-intro">
+        Estructurado y cerrado, no texto libre. Solo así se puede sumar la demanda de muchos
+        hogares y convertirla en una cifra que una institución pueda comprar o despachar. Cada
+        ítem lleva unidad de medida, cantidad y nivel de necesidad.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <caption>Ocho categorías · el catálogo es editable por administrador sin desplegar código</caption>
+          <thead><tr><th>Categoría</th><th>Ítems</th><th>Unidad</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Agua y saneamiento</strong></td><td>Agua potable, tabletas potabilizadoras, filtro, kit de aseo familiar, pañales por talla, toallas higiénicas, papel higiénico</td><td>litro / unidad / kit</td></tr>
+            <tr><td><strong>Alimentación</strong></td><td>Mercado no perecedero, alimento infantil, fórmula láctea, agua embotellada, gas o combustible de cocina, menaje de cocina</td><td>mercado / kg / kit</td></tr>
+            <tr><td><strong>Alojamiento</strong></td><td>Carpa familiar, colchoneta, cobija, sábana, toldillo, plástico o lona impermeable, hamaca</td><td>unidad / m²</td></tr>
+            <tr><td><strong>Salud</strong></td><td>Medicamento crónico (hipertensión, diabetes, epilepsia), botiquín, elementos de movilidad, insumos de discapacidad, atención psicosocial</td><td>tratamiento / unidad / sesión</td></tr>
+            <tr><td><strong>Vestuario</strong></td><td>Ropa por rango de edad y talla, calzado, ropa de abrigo, ropa interior</td><td>unidad / muda</td></tr>
+            <tr><td><strong>Energía y comunicación</strong></td><td>Linterna, pilas, vela, planta eléctrica, cargador solar, radio</td><td>unidad</td></tr>
+            <tr><td><strong>Recuperación</strong></td><td>Herramienta manual, teja, cemento, madera, apoyo para remoción de escombros</td><td>unidad / bulto / jornal</td></tr>
+            <tr><td><strong>Protección</strong></td><td>Kit primera infancia, kit adulto mayor, kit gestante o lactante, apoyo a persona con discapacidad, documentos perdidos</td><td>kit / caso</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Niveles de necesidad</h4>
+      <p>
+        No son ventanas de triage por horas: describen qué tan básica es la carencia, para que una
+        institución pueda decidir qué llevar primero cuando no alcanza para todo.
+      </p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Nivel</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill p-crit">Básica</span></td><td>Necesidad esencial hoy sin cubrir</td><td>Sin agua potable, sin con qué dormir, medicamento crónico agotado.</td></tr>
+            <tr><td><span class="pill p-high">Sostenimiento</span></td><td>Cubierta de forma precaria o por agotarse</td><td>Alimento para pocos días, sin abrigo suficiente, higiene comprometida.</td></tr>
+            <tr><td><span class="pill p-med">Reposición</span></td><td>Bienes perdidos que hacen falta para la vida diaria</td><td>Vestuario, menaje de cocina, enseres, útiles escolares.</td></tr>
+            <tr><td><span class="pill p-low">Recuperación</span></td><td>Insumos para volver a la normalidad</td><td>Materiales de reparación, herramienta, apoyo para reconstrucción.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note warn">
+        <span class="tag">Decisión de diseño</span>
+        <p>
+          El formulario <strong>no</strong> pregunta «¿qué necesita?» en abierto. Pregunta por
+          situación — «¿su vivienda es habitable?», «¿tiene agua para beber hoy?», «¿alguien
+          necesita un medicamento diario?» — y de ahí deriva los ítems. Una persona en crisis no
+          debería tener que traducir su situación al vocabulario logístico de un almacén. Se deja
+          un campo libre opcional al final, que no entra en los agregados pero sí se muestra a
+          quien asume la entrega.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 6 ============ -->
+    <section id="s6">
+      <h2><span class="num">06</span>Modelo de datos</h2>
+      <p class="sec-intro">
+        Separación deliberada entre datos identificables y datos operativos. Las consultas de
+        agregación nunca tocan las tablas con información personal.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <caption>Entidades principales</caption>
+          <thead><tr><th>Entidad</th><th>Campos clave</th><th>Clasificación</th></tr></thead>
+          <tbody>
+            <tr><td><code>evento_sismico</code></td><td>lat, lon, profundidad_km, magnitud, fecha, bandas, activo</td><td><span class="pill p-ok">Público</span></td></tr>
+            <tr><td><code>municipio</code></td><td>codigo_divipola, nombre, departamento, centroide, nivel_oficial, fuente, fecha_fuente</td><td><span class="pill p-ok">Público</span></td></tr>
+            <tr><td><code>usuario</code></td><td>id, telefono_hash, telefono_cifrado, rol, verificado_en, estado</td><td><span class="pill p-crit">PII</span></td></tr>
+            <tr><td><code>hogar</code></td><td>id, usuario_id, n_personas, n_menores, n_mayores_60, n_gestantes, n_discapacidad, estado_vivienda</td><td><span class="pill p-high">Sensible</span></td></tr>
+            <tr><td><code>ubicacion</code></td><td>hogar_id, punto_cifrado, celda_geohash, divipola, vereda, precision_m, metodo_captura</td><td><span class="pill p-crit">PII</span></td></tr>
+            <tr><td><code>solicitud</code></td><td>id, hogar_id, estado, nivel_zona, puntaje, banda, creada_en, actualizada_en</td><td><span class="pill p-med">Operativo</span></td></tr>
+            <tr><td><code>solicitud_item</code></td><td>solicitud_id, catalogo_id, cantidad, unidad, nivel_necesidad, cubierto</td><td><span class="pill p-med">Operativo</span></td></tr>
+            <tr><td><code>organizacion</code></td><td>id, razon_social, nit, estado_verificacion, capacidad, zonas, contacto</td><td><span class="pill p-med">Operativo</span></td></tr>
+            <tr><td><code>compromiso</code></td><td>id, organizacion_id, solicitud_id, items, fecha_estimada, estado, vence_en</td><td><span class="pill p-med">Operativo</span></td></tr>
+            <tr><td><code>entrega</code></td><td>compromiso_id, fecha, items_entregados, confirmada_por_hogar, evidencia</td><td><span class="pill p-med">Operativo</span></td></tr>
+            <tr><td><code>consentimiento</code></td><td>usuario_id, version_politica, finalidades, otorgado_en, revocado_en, ip, canal</td><td><span class="pill p-crit">Legal</span></td></tr>
+            <tr><td><code>auditoria</code></td><td>actor_id, accion, entidad, entidad_id, filtro_usado, ip, timestamp</td><td><span class="pill p-crit">Legal</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note info">
+        <span class="tag">Dos decisiones que conviene notar</span>
+        <p>
+          <strong>El teléfono se guarda dos veces.</strong> Un hash con sal para detectar
+          duplicados sin descifrar nada, y el valor cifrado para poder llamar cuando hay un
+          compromiso activo. La deduplicación nunca necesita ver el número.
+        </p>
+        <p>
+          <strong>La ubicación también.</strong> El punto exacto va cifrado; el
+          <code>geohash</code> de ~1 km es el que usan todas las consultas de las organizaciones.
+          El campo cifrado solo se descifra ante un compromiso vigente, y ese descifrado queda en
+          la bitácora.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 7 ============ -->
+    <section id="s7">
+      <h2><span class="num">07</span>Flujos funcionales</h2>
+
+      <h3>F1 · Registro de un hogar</h3>
+      <ol class="body-list">
+        <li>Ingreso del número de celular → OTP de 6 dígitos, válido 10 minutos, máximo 3 intentos.</li>
+        <li>Aviso de privacidad y autorización de tratamiento. Las finalidades sensibles se aceptan por separado y son opcionales.</li>
+        <li>Ubicación: GPS o selección DIVIPOLA. El sistema calcula banda y nivel.</li>
+        <li>Composición del hogar: número de personas y grupos de especial protección. Cada campo es opcional y se explica para qué sirve.</li>
+        <li>Estado de la vivienda: habitable / con daño / inhabitable / colapsada.</li>
+        <li>Cuestionario situacional → ítems y cantidades sugeridas, que la persona ajusta.</li>
+        <li>Resumen, confirmación y código de seguimiento.</li>
+      </ol>
+      <p>
+        Objetivo de diseño: <strong>completable en menos de 5 minutos y menos de 1 MB de datos</strong>,
+        sobre una conexión 2G intermitente y en un teléfono de gama baja.
+      </p>
+
+      <h3>F2 · Registro asistido por tercero</h3>
+      <p>
+        El registrador comunitario abre la app, que ya tiene descargados los catálogos. Registra
+        hogar por hogar sin conexión. Por cada uno captura una constancia de consentimiento —
+        firma en pantalla o confirmación verbal registrada — y el teléfono del hogar si lo hay.
+        Al recuperar señal, sincroniza. Los registros quedan marcados como asistidos y con
+        identidad del registrador, y el hogar puede reclamar su registro después vía OTP.
+      </p>
+
+      <h3>F3 · Consulta y compromiso de una organización</h3>
+      <ol class="body-list">
+        <li>Tablero de cobertura: municipios ordenados por brecha, con necesidad requerida, recibida y faltante por categoría. Sin ningún dato personal.</li>
+        <li>Filtro por zona, categoría, nivel de necesidad y nivel de afectación.</li>
+        <li>Selección de un lote de solicitudes y creación de un compromiso, con fecha estimada e ítems específicos.</li>
+        <li>Al confirmar el compromiso, y solo entonces, se libera contacto y ubicación exacta de ese lote. Queda en bitácora.</li>
+        <li>El compromiso caduca automáticamente si no se reporta entrega en el plazo, y las solicitudes vuelven al pozo común.</li>
+      </ol>
+
+      <h3>F4 · Entrega y confirmación</h3>
+      <p>
+        La organización reporta la entrega con ítems y cantidades reales. El hogar recibe un SMS
+        para confirmar. Si no confirma en 72 horas, la entrega queda como «reportada sin
+        confirmar» — se contabiliza aparte y afecta el indicador de confiabilidad de la
+        organización. Los ítems entregados se descuentan de la solicitud; lo que quede pendiente
+        vuelve a estar disponible.
+      </p>
+
+      <h3>F5 · Ejercicio de derechos</h3>
+      <p>
+        Desde su cuenta, la persona consulta todos sus datos, los corrige, los descarga en formato
+        legible, revoca autorizaciones específicas o solicita supresión. La supresión anonimiza
+        el registro conservando solo el agregado estadístico, y se ejecuta dentro de los plazos
+        de ley. Debe existir además un canal por correo para quien no pueda entrar a la cuenta.
+      </p>
+    </section>
+
+    <!-- ============ 8 ============ -->
+    <section id="s8">
+      <h2><span class="num">08</span>Índice de cobertura y equidad territorial</h2>
+      <p class="sec-intro">
+        Esta es la razón de ser de la plataforma. No ordena una cola de urgencias: mide la brecha
+        entre lo que cada municipio necesita y lo que efectivamente ha recibido, y la pone al
+        frente para que una institución pueda decidir su destino con evidencia.
+      </p>
+
+      <h3>La medida</h3>
+      <p class="kv" style="margin-bottom:14px">
+        cobertura(municipio, categoría) = unidades recibidas ÷ unidades requeridas
+      </p>
+      <p>
+        Se calcula por categoría y no solo en total, porque un municipio puede estar bien surtido
+        de alimento y no haber recibido una sola colchoneta. El agregado esconde justo lo que hay
+        que ver. Junto a la cobertura se publica la <strong>brecha absoluta</strong> — cuántas
+        unidades faltan — porque es la cifra sobre la que una fundación puede actuar: un
+        porcentaje no se puede cargar en un camión.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <caption>Ejemplo ilustrativo del tablero — cifras hipotéticas, no datos reales</caption>
+          <thead><tr><th>Municipio</th><th>Categoría</th><th>Requerido</th><th>Recibido</th><th>Cobertura</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Pereira (cabecera)</td><td>Alojamiento</td><td class="num-col">1 200</td><td class="num-col">1 140</td><td class="num-col">95 %</td><td><span class="pill p-ok">Cubierto</span></td></tr>
+            <tr><td>Nóvita</td><td>Alojamiento</td><td class="num-col">180</td><td class="num-col">36</td><td class="num-col">20 %</td><td><span class="pill p-crit">Desatendido</span></td></tr>
+            <tr><td>Sipí</td><td>Agua y saneamiento</td><td class="num-col">95</td><td class="num-col">0</td><td class="num-col">0 %</td><td><span class="pill p-crit">Desatendido</span></td></tr>
+            <tr><td>El Cairo</td><td>Alimentación</td><td class="num-col">210</td><td class="num-col">130</td><td class="num-col">62 %</td><td><span class="pill p-high">Parcial</span></td></tr>
+            <tr><td>Bagadó</td><td>—</td><td class="num-col">—</td><td class="num-col">—</td><td class="num-col">—</td><td><span class="pill p-low">Sin datos</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note critical">
+        <span class="tag">La distinción que más importa del tablero</span>
+        <p>
+          <strong>«Sin datos» no es lo mismo que «cubierto», y confundirlos invierte el propósito
+          de la herramienta.</strong> Un municipio con reporte oficial de afectación y cero
+          registros no está bien: es un municipio desde donde nadie ha podido comunicarse. Debe
+          mostrarse en su propia categoría visual, nunca como 0 % ni como celda vacía, y debe
+          disparar una acción distinta — no enviar carga, sino enviar a alguien a registrar.
+        </p>
+      </div>
+
+      <h3>Indicador de concentración urbana</h3>
+      <p>
+        Un solo número, calculado semanalmente y visible para todas las instituciones: qué
+        proporción de la ayuda entregada fue a las cabeceras de las cinco ciudades principales,
+        frente a qué proporción de la necesidad registrada está allí. Si el 70 % de la ayuda llega
+        a donde está el 30 % de la necesidad, ese es exactamente el hecho que la plataforma existe
+        para hacer visible.
+      </p>
+
+      <h3>Vista pública: el canal de mayor alcance</h3>
+      <p>
+        Buena parte de las donaciones que se están moviendo hoy no las dirigen instituciones sino
+        creadores de contenido, medios y colectivos que impulsan campañas. Están decidiendo a
+        ciegas: la ayuda termina donde hay imágenes disponibles, y las imágenes están donde ya
+        llegaron los equipos de prensa. Por eso todo converge en las mismas cinco ciudades.
+      </p>
+      <p>
+        <strong>Un creador que redirige una campaña mueve más volumen que diez fundaciones
+        consultando un panel con login.</strong> El tablero de cobertura, por tanto, no puede
+        vivir detrás de una autenticación. Existe una vista pública, sin cuenta y sin fricción,
+        con una sola pregunta al frente: <em>¿a dónde no está llegando?</em>
+      </p>
+
+      <div class="scroller">
+        <table>
+          <caption>Requisitos de la vista pública</caption>
+          <thead><tr><th class="id">ID</th><th>Requisito</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr><td class="id">RF-10</td><td>Vista pública de cobertura por municipio y categoría, sin autenticación y sin ningún dato personal. Granularidad mínima: municipio.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-11</td><td>Lista destacada de municipios desatendidos, ordenada por brecha, con la cifra concreta que falta: «Sipí necesita 95 kits de aseo. Ha recibido 0».</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-12</td><td>Tarjeta compartible generada automáticamente, en formato vertical para historias y cuadrado para publicaciones, con la cifra, el municipio y la fecha de corte.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-13</td><td>Enlace directo por municipio y por categoría, para que una campaña pueda apuntar a un destino específico y verificable.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-14</td><td>Fecha y hora de última actualización siempre visible. Un dato de hace tres días dirige mal una campaña.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RF-15</td><td>Directorio de instituciones verificadas que operan en cada municipio, para que la campaña tenga a quién entregar.</td><td><span class="pill p-high">Debería</span></td></tr>
+            <tr><td class="id">RF-16</td><td>Widget embebible para que un medio lo inserte en su nota.</td><td><span class="pill p-low">Podría</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note critical">
+        <span class="tag">El riesgo propio de la vista pública</span>
+        <p>
+          Una campaña grande puede sobrecorregir: si mil personas ven que Sipí necesita 95 kits y
+          todas mandan kits, Sipí termina con 4 000 y el problema se traslada. La vista debe
+          mostrar la brecha <strong>ya descontando lo comprometido</strong>, marcar un municipio
+          como cubierto en cuanto lo esté, y no permitir enlaces a destinos ya satisfechos.
+          Sin eso, la herramienta reproduce el mismo fenómeno de manada que intenta corregir,
+          solo que apuntando a otro lugar.
+        </p>
+      </div>
+
+      <h3>Cómo se ordena el tablero</h3>
+      <p>
+        Por defecto, de menor a mayor cobertura, ponderando por el tamaño de la brecha para que un
+        municipio con 4 hogares sin atender no desplace a uno con 300. Los factores del hogar —
+        grupos de especial protección, estado de la vivienda, dificultad de acceso — dejan de ser
+        un puntaje de urgencia y pasan a ser <strong>filtros</strong> que una institución aplica
+        según lo que puede ofrecer.
+      </p>
+
+      <div class="note warn">
+        <span class="tag">Salvaguarda contra el sesgo de conectividad</span>
+        <p>
+          Sin corrección, la plataforma reproduce la desigualdad que quiere medir: los municipios
+          con buena señal se registran primero, se atienden primero y vuelven a registrarse
+          primero. Dos mecanismos lo contienen. Primero, la cobertura se calcula sobre la
+          <strong>necesidad estimada</strong> — derivada de la población afectada según fuente
+          oficial — y no solo sobre la registrada, de modo que un municipio con pocos registros no
+          aparezca artificialmente satisfecho. Segundo, el panel de zonas sin datos es una vista
+          principal, no un reporte secundario.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 9 ============ -->
+    <section id="s9">
+      <h2><span class="num">09</span>Seguridad</h2>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th class="id">ID</th><th>Control</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr><td class="id">RS-01</td><td>Autenticación sin contraseña por OTP SMS. Código de 6 dígitos, vigencia 10 min, 3 intentos, bloqueo progresivo.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-02</td><td>Límite de envío de OTP por número, por IP y global, para contener costo y abuso.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-03</td><td>MFA obligatorio para administradores, coordinadores y usuarios de organización.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-04</td><td>Autorización a nivel de fila en la base de datos, no solo en la aplicación. Aunque el backend tenga una falla, la base niega el acceso.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-05</td><td>Cifrado en tránsito (TLS 1.3, HSTS) y en reposo. Campos de PII con cifrado adicional a nivel de columna.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-06</td><td>Divulgación progresiva: sin compromiso activo, una organización solo ve celda de ~1 km, sin nombre ni contacto.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-07</td><td>Bitácora inmutable de todo acceso a PII, con actor, filtro exacto, IP y marca de tiempo. Retención mínima 2 años.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-08</td><td>Verificación de organizaciones contra NIT y registro mercantil, con revisión humana antes de activar.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-09</td><td>Detección de extracción masiva: umbral por volumen y velocidad de consulta, con suspensión preventiva automática.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-10</td><td>Deduplicación por hash de teléfono y por proximidad geográfica más composición del hogar, con resolución humana — nunca fusión automática.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-11</td><td>Exportación masiva de datos: prohibida por defecto; requiere doble autorización y queda registrada con marca de agua por destinatario.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-12</td><td>Respaldos cifrados con prueba de restauración documentada.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-13</td><td>Cabeceras de seguridad, política de contenido estricta, protección CSRF y validación en servidor de toda entrada.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-14</td><td>Plan de respuesta a incidentes con notificación a la autoridad y a los titulares afectados.</td><td><span class="pill p-crit">Debe</span></td></tr>
+            <tr><td class="id">RS-15</td><td>Interruptor de contingencia: ocultar toda ubicación de un municipio si hay alerta de seguridad en el territorio.</td><td><span class="pill p-high">Debería</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note critical">
+        <span class="tag">RS-15 · Por qué existe este interruptor</span>
+        <p>
+          En territorios con presencia de actores armados, la situación puede cambiar en horas. Si
+          llega una alerta creíble, un coordinador debe poder degradar de inmediato toda la
+          información de ubicación de ese municipio a nivel municipal — sin esperar despliegue,
+          sin pasar por un desarrollador. Que sea un botón y no un ticket es la diferencia entre
+          el control y su ausencia.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 10 ============ -->
+    <section id="s10">
+      <h2><span class="num">10</span>Privacidad y cumplimiento</h2>
+      <p class="sec-intro">
+        Marco aplicable: Ley 1581 de 2012 y Decreto 1377 de 2013, bajo vigilancia de la
+        Superintendencia de Industria y Comercio. Esta sección enumera obligaciones que deben
+        confirmarse con asesoría jurídica antes del lanzamiento — no sustituye ese concepto.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th class="id">ID</th><th>Obligación</th><th>Implicación de producto</th></tr></thead>
+          <tbody>
+            <tr><td class="id">RP-01</td><td>Autorización previa, expresa e informada del titular.</td><td>Casilla no premarcada, con enlace a la política y registro de versión aceptada.</td></tr>
+            <tr><td class="id">RP-02</td><td>Finalidad determinada y explícita.</td><td>Declarar el uso exclusivo para gestión de ayuda humanitaria por este evento. Prohibir usos comerciales o políticos por contrato y por diseño.</td></tr>
+            <tr><td class="id">RP-03</td><td>Datos sensibles: salud, discapacidad, pertenencia étnica.</td><td>Consentimiento separado, advertencia de que no está obligado a responder, y funcionamiento pleno si no los entrega.</td></tr>
+            <tr><td class="id">RP-04</td><td>Datos de niñas, niños y adolescentes.</td><td>No se recogen datos identificables de menores. Solo conteo agregado por rango de edad, bajo autorización del representante.</td></tr>
+            <tr><td class="id">RP-05</td><td>Principio de minimización.</td><td>No se pide documento de identidad en la v1. No se pide dirección exacta si el punto en mapa es suficiente.</td></tr>
+            <tr><td class="id">RP-06</td><td>Derechos de consulta y reclamo.</td><td>Autoservicio en la cuenta más canal de correo. Plazos legales: consulta 10 días hábiles, reclamo 15 días hábiles, prorrogables.</td></tr>
+            <tr><td class="id">RP-07</td><td>Registro Nacional de Bases de Datos ante la SIC.</td><td>Verificar aplicabilidad según naturaleza y tamaño del responsable, y registrar antes de operar si corresponde.</td></tr>
+            <tr><td class="id">RP-08</td><td>Responsable y Encargado del tratamiento.</td><td>Definir qué entidad jurídica es Responsable. Firmar contrato de transmisión de datos con cada organización que acceda a PII.</td></tr>
+            <tr><td class="id">RP-09</td><td>Transferencia internacional de datos.</td><td><strong>Punto crítico.</strong> Alojar fuera de Colombia constituye transferencia internacional. Ver nota abajo.</td></tr>
+            <tr><td class="id">RP-10</td><td>Temporalidad y supresión.</td><td>Política de retención definida — propuesta: 12 meses tras el cierre de la operación de ayuda, luego anonimización irreversible.</td></tr>
+            <tr><td class="id">RP-11</td><td>Deber de seguridad.</td><td>Cubierto por la sección 09. Documentar los controles como evidencia de diligencia.</td></tr>
+            <tr><td class="id">RP-12</td><td>Aviso de privacidad accesible.</td><td>En lenguaje claro, legible en móvil, disponible antes del primer dato y siempre consultable.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note critical">
+        <span class="tag">RP-09 · Decisión que hay que tomar antes de elegir infraestructura</span>
+        <p>
+          Los proveedores de nube más rápidos de desplegar almacenan fuera de Colombia. Bajo el
+          artículo 26 de la Ley 1581, la transferencia internacional está restringida salvo que el
+          país destino ofrezca niveles adecuados de protección, o que aplique una excepción —
+          entre ellas la autorización expresa e inequívoca del titular y los casos de urgencia
+          relacionados con salud pública.
+        </p>
+        <p>
+          Hay dos caminos defendibles: alojar en región con nivel adecuado reconocido y recoger
+          autorización expresa de transferencia, o alojar en infraestructura en territorio
+          colombiano. La segunda es más lenta de montar y más cara de operar, pero elimina la
+          discusión. <strong>Recomiendo confirmar este punto con un abogado en protección de datos
+          antes de escribir la primera línea de infraestructura</strong>, porque migrar después es
+          mucho más costoso que decidirlo ahora.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 11 ============ -->
+    <section id="s11">
+      <h2><span class="num">11</span>Requisitos no funcionales</h2>
+      <div class="scroller">
+        <table>
+          <thead><tr><th class="id">ID</th><th>Requisito</th><th>Meta</th></tr></thead>
+          <tbody>
+            <tr><td class="id">RNF-01</td><td>Peso de la primera carga del formulario de registro</td><td class="num-col">&lt; 200 KB</td></tr>
+            <tr><td class="id">RNF-02</td><td>Registro completo utilizable sobre red 2G</td><td>Obligatorio</td></tr>
+            <tr><td class="id">RNF-03</td><td>Funcionamiento offline con sincronización diferida</td><td>Obligatorio para R2</td></tr>
+            <tr><td class="id">RNF-04</td><td>Disponibilidad del servicio</td><td class="num-col">99.5 %</td></tr>
+            <tr><td class="id">RNF-05</td><td>Accesibilidad</td><td>WCAG 2.1 AA</td></tr>
+            <tr><td class="id">RNF-06</td><td>Idioma</td><td>Español, lenguaje claro, nivel de lectura básico</td></tr>
+            <tr><td class="id">RNF-07</td><td>Soporte de navegadores</td><td>Android 8+ y iOS 13+</td></tr>
+            <tr><td class="id">RNF-08</td><td>Capacidad concurrente</td><td class="num-col">10 000 registros/hora</td></tr>
+            <tr><td class="id">RNF-09</td><td>Tiempo de respuesta de consulta agregada</td><td class="num-col">&lt; 2 s</td></tr>
+            <tr><td class="id">RNF-10</td><td>Portabilidad de datos y ausencia de dependencia de un solo proveedor</td><td>Exportable a PostgreSQL estándar</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        RNF-01 y RNF-02 no son metas de rendimiento: son requisitos de equidad. Si la herramienta
+        solo funciona con buena conexión, atiende a quien ya está siendo atendido.
+      </p>
+    </section>
+
+    <!-- ============ 12 ============ -->
+    <section id="s12">
+      <h2><span class="num">12</span>Métricas de éxito</h2>
+      <p class="sec-intro">
+        La métrica que importa no es cuántas personas se registran, ni siquiera cuánta ayuda se
+        entrega. Es si la ayuda se está repartiendo de forma más pareja que antes de que la
+        plataforma existiera.
+      </p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Indicador</th><th>Definición</th><th>Meta a 60 días</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Brecha de cobertura</strong></td><td>Diferencia entre el municipio mejor y peor cubierto. Es el indicador principal.</td><td>Reducción sostenida</td></tr>
+            <tr><td><strong>Concentración urbana</strong></td><td>Ayuda entregada en las 5 ciudades principales frente a su proporción de la necesidad</td><td>Converger a 1:1</td></tr>
+            <tr><td>Municipios desatendidos</td><td>Municipios con cobertura bajo 30 % en alguna categoría</td><td>Tendencia a cero</td></tr>
+            <tr><td>Zonas sin datos</td><td>Municipios con reporte oficial de afectación y cero registros</td><td>Tendencia a cero</td></tr>
+            <tr><td>Cobertura territorial</td><td>Municipios afectados con al menos un registro</td><td class="num-col">&gt; 80 %</td></tr>
+            <tr><td>Alcance rural</td><td>Proporción de registros fuera de cabecera municipal</td><td class="num-col">&gt; 40 %</td></tr>
+            <tr><td>Instituciones activas</td><td>Organizaciones que consultaron y reportaron al menos una entrega</td><td class="num-col">&ge; 5</td></tr>
+            <tr><td>Campañas redirigidas</td><td>Campañas de donación que apuntaron a un municipio desatendido usando un enlace de la vista pública</td><td class="num-col">&ge; 10</td></tr>
+            <tr><td>Alcance de la vista pública</td><td>Visitas únicas y tarjetas compartidas</td><td>Crecimiento sostenido</td></tr>
+            <tr><td>Necesidad atendida</td><td>Unidades requeridas que han sido cubiertas</td><td class="num-col">&gt; 60 %</td></tr>
+            <tr><td>Abandono del formulario</td><td>Registros iniciados sin completar</td><td class="num-col">&lt; 25 %</td></tr>
+            <tr><td>Incidentes de datos</td><td>Accesos indebidos confirmados</td><td class="num-col">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Los dos primeros indicadores son el producto. Si la brecha de cobertura no se reduce y la
+        concentración urbana no baja, la plataforma está funcionando bien técnicamente y fallando
+        en su propósito — y eso hay que poder verlo sin ambigüedad.
+      </p>
+    </section>
+
+    <!-- ============ 13 ============ -->
+    <section id="s13">
+      <h2><span class="num">13</span>Fases de entrega</h2>
+      <p class="sec-intro">
+        La ayuda se está repartiendo ahora, así que cada fase debe ser útil por sí sola en vez de
+        esperar a un producto completo.
+      </p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Fase</th><th>Alcance</th><th>Condición de salida</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="pill p-crit">F1</span><br>Registro</td>
+              <td>Registro por OTP, ubicación, elegibilidad y catálogo de necesidades. Consentimiento y bitácora desde el primer día.</td>
+              <td>Un municipio piloto registrando necesidades de forma completa.</td>
+            </tr>
+            <tr>
+              <td><span class="pill p-high">F2</span><br>Tablero de equidad</td>
+              <td>Índice de cobertura por municipio y categoría, brecha absoluta, indicador de concentración urbana, vista de zonas sin datos. Acceso verificado para instituciones <strong>y vista pública sin cuenta con tarjetas compartibles</strong> para campañas y creadores.</td>
+              <td>Una institución tomando una decisión de destino basada en el tablero, y una campaña apuntando a un municipio desatendido.</td>
+            </tr>
+            <tr>
+              <td><span class="pill p-med">F3</span><br>Cierre del ciclo</td>
+              <td>Registro de entregas por parte de las instituciones, confirmación por el hogar, deduplicación, divulgación progresiva de contacto, registro asistido offline.</td>
+              <td>La cobertura se actualiza con entregas reales y no solo con necesidad declarada.</td>
+            </tr>
+            <tr>
+              <td><span class="pill p-low">F4</span><br>Consolidación</td>
+              <td>Reportes públicos anonimizados, interoperabilidad con sistemas oficiales, indicadores de confiabilidad por organización.</td>
+              <td>Datos utilizables por autoridades sin exponer PII.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 14 ============ -->
+    <section id="s14">
+      <h2><span class="num">14</span>Riesgos y decisiones abiertas</h2>
+
+      <div class="scroller">
+        <table>
+          <caption>Riesgos priorizados</caption>
+          <thead><tr><th>Riesgo</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+          <tbody>
+            <tr><td>Expectativa sin respaldo: se registran familias y nadie entrega</td><td><span class="pill p-crit">Crítico</span></td><td>No lanzar sin organizaciones comprometidas. Mensaje honesto en el registro sobre qué garantiza y qué no.</td></tr>
+            <tr><td>Filtración de ubicaciones en territorio con actores armados</td><td><span class="pill p-crit">Crítico</span></td><td>RS-06, RS-07, RS-15. Cifrado a nivel de columna y divulgación progresiva.</td></tr>
+            <tr><td>Sesgo de conectividad: se atiende a quien tiene señal</td><td><span class="pill p-crit">Crítico</span></td><td>Registro asistido offline, factor de tiempo acelerado, panel de zonas en silencio.</td></tr>
+            <tr><td>Registros falsos que desvían ayuda</td><td><span class="pill p-high">Alto</span></td><td>OTP, deduplicación, verificación de plausibilidad geográfica, confirmación de entrega por el hogar.</td></tr>
+            <tr><td>Uso indebido de la base por una organización</td><td><span class="pill p-high">Alto</span></td><td>Verificación por NIT, contrato de transmisión, detección de extracción masiva, suspensión.</td></tr>
+            <tr><td>Duplicación con el censo oficial y confusión del ciudadano</td><td><span class="pill p-med">Medio</span></td><td>Declarar el carácter complementario. Buscar interoperabilidad con la UNGRD en F4.</td></tr>
+            <tr><td>Costo de SMS bajo un pico de registros</td><td><span class="pill p-med">Medio</span></td><td>Límites de envío, tope de gasto con alerta, evaluar WhatsApp como canal alterno.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Decisiones que necesito de tu parte</h3>
+      <ol class="body-list">
+        <li><strong>Entidad responsable.</strong> ¿Qué persona jurídica figura como Responsable del tratamiento? Sin esto no hay política de privacidad válida ni registro ante la SIC.</li>
+        <li><strong>Jurisdicción del alojamiento.</strong> Dentro o fuera de Colombia. Determina la arquitectura completa (RP-09).</li>
+        <li><strong>Organizaciones aliadas.</strong> ¿Hay ya alguna fundación dispuesta? Es prerrequisito de lanzamiento.</li>
+        <li><strong>Municipio piloto.</strong> Recomiendo San José del Palmar o un vecino, donde el problema de acceso es más agudo y el impacto más medible.</li>
+        <li><strong>Presupuesto de SMS.</strong> Determina si el OTP es viable a escala o si hay que priorizar el canal de WhatsApp.</li>
+        <li><strong>Registro asistido en F1.</strong> Lo propongo en F3, pero si el piloto es San José del Palmar tendría que subir a F1 — ahí no hay señal.</li>
+      </ol>
+    </section>
+
+    <p class="footer-note">
+      Documento de trabajo, versión 0.1, 12 de agosto de 2026. Los parámetros del sismo provienen
+      del Servicio Geológico Colombiano y de reportes de prensa de las primeras 48 horas; deben
+      reverificarse contra la fuente oficial antes de configurar el motor de elegibilidad, dado
+      que magnitud y profundidad ya fueron revisadas una vez. Las referencias normativas requieren
+      validación de un abogado en protección de datos y no constituyen asesoría legal.
+    </p>
+
+  </main>
+</div>

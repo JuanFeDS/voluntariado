@@ -16,10 +16,17 @@
     </header>
 
     <main class="form-page">
+      <p class="form-disclaimer">
+        <strong>Aviso importante:</strong> este sitio es una herramienta comunitaria para
+        <strong>visibilizar</strong> solicitudes de ayuda y conectar con quienes pueden colaborar.
+        No somos una entidad de atención de emergencias y <strong>no podemos garantizar al 100% que la ayuda llegue</strong>.
+        Si tu situación es de riesgo vital, contactá primero a las líneas oficiales de emergencia.
+      </p>
+
       <p class="form-notice">
         Tu solicitud queda <strong>pendiente de revisión</strong> antes de ser visible.
-        Cuando se publique, solo se muestra tu <strong>localidad aproximada</strong> y qué necesitás —
-        <strong>tu dirección exacta y tu teléfono nunca son públicos</strong>, solo los ve el equipo que coordina la ayuda.
+        Cuando se publique, solo se muestran <strong>departamento, municipio</strong> y qué necesitás —
+        <strong>tu barrio/vereda, dirección exacta y teléfono nunca son públicos</strong>, solo los ve el equipo que coordina la ayuda.
       </p>
 
       <form id="damnificado-form" class="form" novalidate>
@@ -34,13 +41,63 @@
         </label>
 
         <label class="form-field">
-          <span>Localidad o barrio aproximado * <small>(esto sí será público)</small></span>
-          <input type="text" name="localidad_aprox" required maxlength="150" placeholder="Engativá, Kennedy, Suba..." />
+          <span>Departamento * <small>(esto sí será público)</small></span>
+          <select name="departamento" required>
+            <option value="" selected disabled>Selecciona tu departamento</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Antioquia">Antioquia</option>
+            <option value="Arauca">Arauca</option>
+            <option value="Atlántico">Atlántico</option>
+            <option value="Bogotá D.C.">Bogotá D.C.</option>
+            <option value="Bolívar">Bolívar</option>
+            <option value="Boyacá">Boyacá</option>
+            <option value="Caldas">Caldas</option>
+            <option value="Caquetá">Caquetá</option>
+            <option value="Casanare">Casanare</option>
+            <option value="Cauca">Cauca</option>
+            <option value="Cesar">Cesar</option>
+            <option value="Chocó">Chocó</option>
+            <option value="Córdoba">Córdoba</option>
+            <option value="Cundinamarca">Cundinamarca</option>
+            <option value="Guainía">Guainía</option>
+            <option value="Guaviare">Guaviare</option>
+            <option value="Huila">Huila</option>
+            <option value="La Guajira">La Guajira</option>
+            <option value="Magdalena">Magdalena</option>
+            <option value="Meta">Meta</option>
+            <option value="Nariño">Nariño</option>
+            <option value="Norte de Santander">Norte de Santander</option>
+            <option value="Putumayo">Putumayo</option>
+            <option value="Quindío">Quindío</option>
+            <option value="Risaralda">Risaralda</option>
+            <option value="San Andrés y Providencia">San Andrés y Providencia</option>
+            <option value="Santander">Santander</option>
+            <option value="Sucre">Sucre</option>
+            <option value="Tolima">Tolima</option>
+            <option value="Valle del Cauca">Valle del Cauca</option>
+            <option value="Vaupés">Vaupés</option>
+            <option value="Vichada">Vichada</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Municipio * <small>(esto sí será público)</small></span>
+          <input type="text" name="municipio" required maxlength="100" placeholder="Quibdó, Bogotá, Istmina..." />
+        </label>
+
+        <label class="form-field">
+          <span>Barrio o vereda <small>(privado, solo lo ve el equipo coordinador)</small></span>
+          <input type="text" name="barrio_vereda" maxlength="150" placeholder="Engativá, Vereda La Esperanza..." />
         </label>
 
         <label class="form-field">
           <span>Dirección exacta * <small>(privada, solo la ve el equipo coordinador)</small></span>
           <input type="text" name="direccion_exacta" required maxlength="300" />
+        </label>
+
+        <label class="form-field">
+          <span>Alcaldía más cercana <small>(privada, ayuda a coordinar con la administración local)</small></span>
+          <input type="text" name="alcaldia_cercana" maxlength="150" />
         </label>
 
         <label class="form-field">
@@ -51,6 +108,11 @@
         <label class="form-field">
           <span>Número de personas afectadas</span>
           <input type="number" name="numero_personas_afectadas" min="1" max="100000" />
+        </label>
+
+        <label class="form-field form-field--checkbox">
+          <input type="checkbox" name="recibio_ayuda_antes" value="true" />
+          <span>Ya habíamos recibido ayuda antes</span>
         </label>
 
         <fieldset class="form-field">

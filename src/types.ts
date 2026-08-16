@@ -26,9 +26,57 @@ export type Urgencia = "alta" | "media" | "baja";
 
 export interface VictimRequestPublic {
   id: string;
-  localidadAprox: string;
+  departamento: string;
+  municipio: string;
   numeroPersonasAfectadas: number | null;
   tipoAyuda: string;
   urgencia: Urgencia;
+  recibioAyudaAntes: boolean | null;
   createdAt: string;
+}
+
+export type NecesitaVoluntarios = "si" | "no" | "revisando";
+
+export interface FoundationRequestAdmin {
+  id: string;
+  status: RequestStatus;
+  nombreOrganizacion: string;
+  direccion: string;
+  localidad: string;
+  necesitaVoluntarios: NecesitaVoluntarios;
+  necesitaDonaciones: boolean;
+  tipoDonaciones: string;
+  horarios: string;
+  contactoNombre: string;
+  contactoTelefono: string;
+  instagram: string;
+  linkInscripcion: string;
+  notas: string;
+  createdAt: string;
+}
+
+export interface VictimRequestAdmin {
+  id: string;
+  status: RequestStatus;
+  nombreContacto: string;
+  departamento: string;
+  municipio: string;
+  barrioVereda: string;
+  direccionExacta: string;
+  alcaldiaCercana: string;
+  numeroPersonasAfectadas: number | null;
+  tipoAyuda: string;
+  urgencia: Urgencia;
+  telefonoContacto: string;
+  recibioAyudaAntes: boolean;
+  notas: string;
+  createdAt: string;
+}
+
+export interface MunicipioZoneCount {
+  departamento: string;
+  municipio: string;
+  count: number;
+  lat: number;
+  lng: number;
 }

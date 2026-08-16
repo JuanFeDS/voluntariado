@@ -21,12 +21,16 @@ bindFormSubmit({
     const { error } = await supabase.from("victim_requests").insert({
       status: "pendiente",
       nombre_contacto: formData.get("nombre_contacto") || null,
-      localidad_aprox: formData.get("localidad_aprox"),
+      departamento: formData.get("departamento"),
+      municipio: formData.get("municipio"),
+      barrio_vereda: formData.get("barrio_vereda") || null,
       direccion_exacta: formData.get("direccion_exacta"),
+      alcaldia_cercana: formData.get("alcaldia_cercana") || null,
       telefono_contacto: formData.get("telefono_contacto") || null,
       numero_personas_afectadas: numeroPersonas ? Number(numeroPersonas) : null,
       tipo_ayuda: tipoAyuda,
       urgencia: formData.get("urgencia"),
+      recibio_ayuda_antes: formData.get("recibio_ayuda_antes") === "true",
       notas: formData.get("notas") || null,
     });
 

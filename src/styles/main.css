@@ -231,7 +231,29 @@ a {
   grid-area: map;
   border: 1px solid var(--line);
   overflow: hidden;
+  position: relative;
   min-height: 300px;
+}
+
+.zone-toggle-wrap {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1000;
+}
+
+.zone-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 /* ---------- Filtros ---------- */
@@ -472,6 +494,17 @@ a {
   overflow: hidden;
 }
 
+.form-disclaimer {
+  background: var(--urgente-soft);
+  border: 2px solid var(--urgente);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .form-notice {
   background: var(--pendiente-soft);
   border: 1px solid var(--pendiente);
@@ -640,4 +673,201 @@ fieldset.form-field legend {
   .app-layout[data-active-view="map"] .panel--list {
     display: none;
   }
+}
+
+/* ---------- Panel de administración ---------- */
+
+.admin-login {
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+}
+
+.admin-login h1 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+.admin-login-form .form-submit {
+  width: 100%;
+}
+
+.admin-logout {
+  border: 1px solid var(--paper);
+  background: transparent;
+  color: var(--paper);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+#admin-user-email {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin-right: 0.75rem;
+}
+
+.admin-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-section__title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
+.admin-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.admin-metric-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-metric-card__value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.admin-metric-card__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+.admin-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.admin-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.85rem 1rem;
+}
+
+.admin-card[data-status="pendiente"] {
+  border-left-color: var(--pendiente);
+}
+
+.admin-card[data-status="aprobado"] {
+  border-left-color: var(--estable);
+}
+
+.admin-card[data-status="rechazado"] {
+  border-left-color: var(--urgente);
+}
+
+.admin-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.admin-card__meta {
+  margin: 0.15rem 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.admin-card__fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.admin-card__fields dt {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.admin-card__fields dd {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.admin-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.admin-action {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.admin-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-action--approve {
+  border-color: var(--estable);
+  color: var(--estable);
+}
+
+.admin-action--reject {
+  border-color: var(--urgente);
+  color: var(--urgente);
+}
+
+.admin-action--edit {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.admin-action--delete {
+  color: var(--ink-soft);
+}
+
+.admin-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.admin-empty {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
 }

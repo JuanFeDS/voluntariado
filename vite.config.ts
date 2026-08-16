@@ -15,6 +15,7 @@ export default defineConfig(() => ({
         main: path.resolve(__dirname, "index.html"),
         fundacion: path.resolve(__dirname, "fundacion.html"),
         damnificado: path.resolve(__dirname, "damnificado.html"),
+        admin: path.resolve(__dirname, "admin.html"),
       },
     },
   },

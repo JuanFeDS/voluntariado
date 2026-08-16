@@ -1,10 +1,9 @@
 import { defineConfig } from "vite";
 import path from "node:path";
 
-export default defineConfig(({ command }) => ({
-  // Solo en build: en dev, exigir el prefijo /voluntariado/ rompe el acceso
-  // directo a fundacion.html/damnificado.html (Vite dev server lo exige tal cual).
-  base: command === "build" ? "/voluntariado/" : "/",
+export default defineConfig(() => ({
+  // Dominio propio (pegaungrito.com) sirve la app desde la raíz.
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

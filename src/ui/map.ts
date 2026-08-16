@@ -3,7 +3,7 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import type { HelpPoint } from "@/types";
+import type { HelpPoint, MunicipioZoneCount } from "@/types";
 import { BOGOTA_CENTER } from "@/config";
 import { escapeHtml } from "@/utils/html";
 import { hasCoords, statusVariant, renderLinksHtml } from "@/utils/pointFormat";
@@ -23,6 +23,8 @@ export interface MapController {
   setPoints(points: HelpPoint[]): void;
   focusPoint(point: HelpPoint): void;
   invalidateSize(): void;
+  setZones(zones: MunicipioZoneCount[]): void;
+  setZonesVisible(visible: boolean): void;
 }
 
 export function renderMap(container: HTMLElement): MapController {
@@ -68,7 +70,34 @@ export function renderMap(container: HTMLElement): MapController {
     map.invalidateSize();
   }
 
-  return { setPoints, focusPoint, invalidateSize };
+  const zoneLayer = L.layerGroup();
+
+  function setZones(zones: MunicipioZoneCount[]): void {
+    zoneLayer.clearLayers();
+    zones.forEach((zone) => {
+      L.circleMarker([zone.lat, zone.lng], {
+        radius: Math.min(8 + Math.sqrt(zone.count) * 6, 40),
+        color: "#d62828",
+        weight: 2,
+        fillColor: "#d62828",
+        fillOpacity: 0.35,
+      })
+        .bindPopup(
+          `<strong>${escapeHtml(zone.municipio)}, ${escapeHtml(zone.departamento)}</strong><br>${zone.count} solicitud${zone.count === 1 ? "" : "es"} de ayuda`,
+        )
+        .addTo(zoneLayer);
+    });
+  }
+
+  function setZonesVisible(visible: boolean): void {
+    if (visible) {
+      zoneLayer.addTo(map);
+    } else {
+      zoneLayer.removeFrom(map);
+    }
+  }
+
+  return { setPoints, focusPoint, invalidateSize, setZones, setZonesVisible };
 }
 
 function buildPopupContent(point: HelpPoint): string {

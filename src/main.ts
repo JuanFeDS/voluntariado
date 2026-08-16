@@ -1,11 +1,13 @@
 import "@/styles/main.css";
 import type { HelpPoint, VolunteerFilter } from "@/types";
 import { loadHelpPoints, filterPoints } from "@/services/points";
+import { fetchAffectedZones } from "@/services/zoneMap";
 import { renderFilters } from "@/ui/filters";
 import { renderList } from "@/ui/list";
 import { renderMap } from "@/ui/map";
 import { renderViewToggle } from "@/ui/viewToggle";
 import type { MobileView } from "@/ui/viewToggle";
+import { renderZoneToggle } from "@/ui/zoneToggle";
 import { hasCoords } from "@/utils/pointFormat";
 
 async function init(): Promise<void> {
@@ -14,6 +16,7 @@ async function init(): Promise<void> {
   const viewToggleContainer = document.getElementById("view-toggle")!;
   const listContainer = document.getElementById("list")!;
   const mapContainer = document.getElementById("map")!;
+  const zoneToggleContainer = document.getElementById("zone-toggle")!;
 
   let allPoints: HelpPoint[] = [];
   let activeFilter: VolunteerFilter = "todos";
@@ -58,6 +61,20 @@ async function init(): Promise<void> {
   filtersController.onChange((filter) => {
     activeFilter = filter;
     renderVisiblePoints();
+  });
+
+  const zoneToggleController = renderZoneToggle(zoneToggleContainer);
+  let zonesLoaded = false;
+  zoneToggleController.onChange(async (visible) => {
+    if (visible && !zonesLoaded) {
+      zonesLoaded = true;
+      try {
+        mapController.setZones(await fetchAffectedZones());
+      } catch {
+        zonesLoaded = false;
+      }
+    }
+    mapController.setZonesVisible(visible);
   });
 
   try {

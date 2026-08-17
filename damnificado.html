@@ -3,26 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solicitar ayuda — Voluntariado Bogotá</title>
+    <title>Solicitar ayuda — Pega un Grito</title>
     <link rel="stylesheet" href="/src/styles/main.css" />
   </head>
   <body>
-    <header class="app-header">
-      <h1>Solicitá ayuda</h1>
-      <p class="app-subtitle">
-        Si vos o tu familia necesitan ayuda, contanos qué hace falta.
-        <a href="index.html">Volver al mapa</a>
-      </p>
+    <header class="page-header">
+      <a class="page-header__back" href="index.html" aria-label="Volver al mapa">←</a>
+      <span class="page-header__title">Solicitá ayuda</span>
     </header>
+    <p class="trust-strip">
+      Iniciativa ciudadana · no es una entidad oficial de emergencias · si hay riesgo de vida llama al <strong>123</strong>
+    </p>
 
-    <main class="form-page">
+    <dialog id="disclaimer-modal" class="disclaimer-modal">
       <p class="form-disclaimer">
         <strong>Aviso importante:</strong> este sitio es una herramienta comunitaria para
         <strong>visibilizar</strong> solicitudes de ayuda y conectar con quienes pueden colaborar.
         No somos una entidad de atención de emergencias y <strong>no podemos garantizar al 100% que la ayuda llegue</strong>.
         Si tu situación es de riesgo vital, contactá primero a las líneas oficiales de emergencia.
       </p>
+      <button type="button" class="form-submit disclaimer-modal__close" data-close-disclaimer>Entendido</button>
+    </dialog>
 
+    <main class="form-page">
       <p class="form-notice">
         Tu solicitud queda <strong>pendiente de revisión</strong> antes de ser visible.
         Cuando se publique, solo se muestran <strong>departamento, municipio</strong> y qué necesitás —
@@ -35,123 +38,160 @@
           <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" />
         </label>
 
-        <label class="form-field">
-          <span>Nombre de contacto</span>
-          <input type="text" name="nombre_contacto" maxlength="150" />
-        </label>
+        <div class="wizard-progress" data-wizard-progress aria-hidden="true">
+          <span class="wizard-progress__bar"></span>
+          <span class="wizard-progress__bar"></span>
+          <span class="wizard-progress__bar"></span>
+        </div>
 
-        <label class="form-field">
-          <span>Departamento * <small>(esto sí será público)</small></span>
-          <select name="departamento" required>
-            <option value="" selected disabled>Selecciona tu departamento</option>
-            <option value="Amazonas">Amazonas</option>
-            <option value="Antioquia">Antioquia</option>
-            <option value="Arauca">Arauca</option>
-            <option value="Atlántico">Atlántico</option>
-            <option value="Bogotá D.C.">Bogotá D.C.</option>
-            <option value="Bolívar">Bolívar</option>
-            <option value="Boyacá">Boyacá</option>
-            <option value="Caldas">Caldas</option>
-            <option value="Caquetá">Caquetá</option>
-            <option value="Casanare">Casanare</option>
-            <option value="Cauca">Cauca</option>
-            <option value="Cesar">Cesar</option>
-            <option value="Chocó">Chocó</option>
-            <option value="Córdoba">Córdoba</option>
-            <option value="Cundinamarca">Cundinamarca</option>
-            <option value="Guainía">Guainía</option>
-            <option value="Guaviare">Guaviare</option>
-            <option value="Huila">Huila</option>
-            <option value="La Guajira">La Guajira</option>
-            <option value="Magdalena">Magdalena</option>
-            <option value="Meta">Meta</option>
-            <option value="Nariño">Nariño</option>
-            <option value="Norte de Santander">Norte de Santander</option>
-            <option value="Putumayo">Putumayo</option>
-            <option value="Quindío">Quindío</option>
-            <option value="Risaralda">Risaralda</option>
-            <option value="San Andrés y Providencia">San Andrés y Providencia</option>
-            <option value="Santander">Santander</option>
-            <option value="Sucre">Sucre</option>
-            <option value="Tolima">Tolima</option>
-            <option value="Valle del Cauca">Valle del Cauca</option>
-            <option value="Vaupés">Vaupés</option>
-            <option value="Vichada">Vichada</option>
-          </select>
-        </label>
+        <section class="wizard-step" data-wizard-step="1">
+          <h2 class="wizard-step__title">¿Qué necesitan ahora mismo?</h2>
+          <p class="wizard-step__subtitle">Tocá todo lo que aplique. Lo podés cambiar después.</p>
 
-        <label class="form-field">
-          <span>Municipio * <small>(esto sí será público)</small></span>
-          <input type="text" name="municipio" required maxlength="100" placeholder="Quibdó, Bogotá, Istmina..." />
-        </label>
+          <fieldset class="form-field">
+            <legend>¿Qué necesitan? *</legend>
+            <div class="chip-group">
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Alimento" /> <span>Alimento</span>
+              </label>
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Refugio" /> <span>Refugio</span>
+              </label>
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Agua" /> <span>Agua</span>
+              </label>
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Medicinas" /> <span>Medicinas</span>
+              </label>
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Ropa" /> <span>Ropa</span>
+              </label>
+              <label class="chip-toggle">
+                <input type="checkbox" name="tipo_ayuda" value="Otro" /> <span>Otro</span>
+              </label>
+            </div>
+          </fieldset>
 
-        <label class="form-field">
-          <span>Barrio o vereda <small>(privado, solo lo ve el equipo coordinador)</small></span>
-          <input type="text" name="barrio_vereda" maxlength="150" placeholder="Engativá, Vereda La Esperanza..." />
-        </label>
+          <div class="form-field">
+            <span>¿Cuántas personas son?</span>
+            <div class="stepper" data-stepper>
+              <button type="button" class="stepper__btn" data-step="-1" aria-label="Restar persona">−</button>
+              <div class="stepper__value" data-stepper-value>—</div>
+              <button type="button" class="stepper__btn" data-step="1" aria-label="Sumar persona">+</button>
+              <input type="hidden" name="numero_personas_afectadas" data-stepper-input min="1" max="100000" />
+            </div>
+          </div>
 
-        <label class="form-field">
-          <span>Dirección exacta * <small>(privada, solo la ve el equipo coordinador)</small></span>
-          <input type="text" name="direccion_exacta" required maxlength="300" />
-        </label>
-
-        <label class="form-field">
-          <span>Alcaldía más cercana <small>(privada, ayuda a coordinar con la administración local)</small></span>
-          <input type="text" name="alcaldia_cercana" maxlength="150" />
-        </label>
-
-        <label class="form-field">
-          <span>Teléfono de contacto <small>(privado)</small></span>
-          <input type="tel" name="telefono_contacto" maxlength="50" />
-        </label>
-
-        <label class="form-field">
-          <span>Número de personas afectadas</span>
-          <input type="number" name="numero_personas_afectadas" min="1" max="100000" />
-        </label>
-
-        <label class="form-field form-field--checkbox">
-          <input type="checkbox" name="recibio_ayuda_antes" value="true" />
-          <span>Ya habíamos recibido ayuda antes</span>
-        </label>
-
-        <fieldset class="form-field">
-          <legend>¿Qué necesitan? *</legend>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Alimento" /> <span>Alimento</span>
+          <label class="form-field">
+            <span>Urgencia</span>
+            <select name="urgencia">
+              <option value="alta">Alta</option>
+              <option value="media" selected>Media</option>
+              <option value="baja">Baja</option>
+            </select>
           </label>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Refugio" /> <span>Refugio</span>
-          </label>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Agua" /> <span>Agua</span>
-          </label>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Medicinas" /> <span>Medicinas</span>
-          </label>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Ropa" /> <span>Ropa</span>
-          </label>
-          <label class="form-field--checkbox">
-            <input type="checkbox" name="tipo_ayuda" value="Otro" /> <span>Otro</span>
-          </label>
-        </fieldset>
+        </section>
 
-        <label class="form-field">
-          <span>Urgencia</span>
-          <select name="urgencia">
-            <option value="alta">Alta</option>
-            <option value="media" selected>Media</option>
-            <option value="baja">Baja</option>
-          </select>
-        </label>
+        <section class="wizard-step" data-wizard-step="2" hidden>
+          <h2 class="wizard-step__title">¿Dónde están?</h2>
+          <p class="wizard-step__subtitle">
+            Departamento y municipio son públicos. El resto es privado — solo lo ve el equipo coordinador.
+          </p>
 
-        <label class="form-field">
-          <span>Notas</span>
-          <textarea name="notas" rows="4" maxlength="3000"></textarea>
-        </label>
+          <label class="form-field">
+            <span>Departamento * <small>(esto sí será público)</small></span>
+            <select name="departamento" required>
+              <option value="" selected disabled>Selecciona tu departamento</option>
+              <option value="Amazonas">Amazonas</option>
+              <option value="Antioquia">Antioquia</option>
+              <option value="Arauca">Arauca</option>
+              <option value="Atlántico">Atlántico</option>
+              <option value="Bogotá D.C.">Bogotá D.C.</option>
+              <option value="Bolívar">Bolívar</option>
+              <option value="Boyacá">Boyacá</option>
+              <option value="Caldas">Caldas</option>
+              <option value="Caquetá">Caquetá</option>
+              <option value="Casanare">Casanare</option>
+              <option value="Cauca">Cauca</option>
+              <option value="Cesar">Cesar</option>
+              <option value="Chocó">Chocó</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Cundinamarca">Cundinamarca</option>
+              <option value="Guainía">Guainía</option>
+              <option value="Guaviare">Guaviare</option>
+              <option value="Huila">Huila</option>
+              <option value="La Guajira">La Guajira</option>
+              <option value="Magdalena">Magdalena</option>
+              <option value="Meta">Meta</option>
+              <option value="Nariño">Nariño</option>
+              <option value="Norte de Santander">Norte de Santander</option>
+              <option value="Putumayo">Putumayo</option>
+              <option value="Quindío">Quindío</option>
+              <option value="Risaralda">Risaralda</option>
+              <option value="San Andrés y Providencia">San Andrés y Providencia</option>
+              <option value="Santander">Santander</option>
+              <option value="Sucre">Sucre</option>
+              <option value="Tolima">Tolima</option>
+              <option value="Valle del Cauca">Valle del Cauca</option>
+              <option value="Vaupés">Vaupés</option>
+              <option value="Vichada">Vichada</option>
+            </select>
+          </label>
 
-        <button type="submit" class="form-submit">Enviar solicitud</button>
+          <label class="form-field">
+            <span>Municipio * <small>(esto sí será público)</small></span>
+            <input type="text" name="municipio" required maxlength="100" placeholder="Quibdó, Bogotá, Istmina..." />
+          </label>
+
+          <label class="form-field">
+            <span>Barrio o vereda <small>(privado)</small></span>
+            <input type="text" name="barrio_vereda" maxlength="150" placeholder="Engativá, Vereda La Esperanza..." />
+          </label>
+
+          <label class="form-field">
+            <span>Dirección exacta * <small>(privada)</small></span>
+            <input type="text" name="direccion_exacta" required maxlength="300" />
+          </label>
+
+          <label class="form-field">
+            <span>Alcaldía más cercana <small>(privada)</small></span>
+            <input type="text" name="alcaldia_cercana" maxlength="150" />
+          </label>
+        </section>
+
+        <section class="wizard-step" data-wizard-step="3" hidden>
+          <h2 class="wizard-step__title">¿Cómo te contactamos?</h2>
+          <p class="wizard-step__subtitle">Tu teléfono nunca se muestra en público — solo lo ve el equipo coordinador.</p>
+
+          <label class="form-field">
+            <span>Nombre de contacto</span>
+            <input type="text" name="nombre_contacto" maxlength="150" />
+          </label>
+
+          <label class="form-field">
+            <span>Teléfono de contacto <small>(privado)</small></span>
+            <input type="tel" name="telefono_contacto" maxlength="50" />
+          </label>
+
+          <label class="chip-toggle">
+            <input type="checkbox" name="recibio_ayuda_antes" value="true" />
+            <span>Ya habíamos recibido ayuda antes</span>
+          </label>
+
+          <label class="form-field">
+            <span>Notas</span>
+            <textarea name="notas" rows="4" maxlength="3000"></textarea>
+          </label>
+        </section>
+
+        <p class="wizard-error" data-wizard-error role="alert"></p>
+
+        <div class="wizard-nav">
+          <button type="button" class="wizard-nav__back" data-wizard-back hidden aria-label="Paso anterior">←</button>
+          <button type="button" class="form-submit wizard-nav__next" data-wizard-next>Continuar</button>
+          <button type="submit" class="form-submit wizard-nav__next" data-wizard-submit hidden>Enviar solicitud</button>
+        </div>
+
         <p id="damnificado-status" class="form-status" role="status"></p>
       </form>
     </main>

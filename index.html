@@ -3,21 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Voluntariado y donaciones en tiempo real — Bogotá</title>
+    <title>Pega un Grito — ayuda en tiempo real</title>
     <link rel="stylesheet" href="/src/styles/main.css" />
   </head>
   <body>
-    <header class="app-header">
-      <h1>Voluntariado y donaciones — Bogotá</h1>
-      <p class="app-subtitle">
-        <span class="live-indicator">Sincronizado automáticamente</span>
-        Datos en vivo desde la hoja comunitaria
-      </p>
-      <nav class="app-nav">
-        <a href="fundacion.html">Registrar fundación / punto de acopio</a>
-        <a href="damnificado.html">Solicitar ayuda</a>
-      </nav>
+    <header class="site-header">
+      <a class="site-header__brand" href="index.html">
+        <span class="site-header__mark" aria-hidden="true"></span>
+        <span class="site-header__name">Pega un Grito</span>
+      </a>
+      <span class="live-indicator">Sincronizado</span>
     </header>
+    <p class="trust-strip">
+      Iniciativa ciudadana · no es una entidad oficial de emergencias · si hay riesgo de vida llama al <strong>123</strong>
+    </p>
+    <nav class="role-actions">
+      <a class="role-action role-action--primary" href="damnificado.html">
+        <span class="role-action__title">Necesito ayuda</span>
+        <span class="role-action__subtitle">Publicá tu pedido</span>
+      </a>
+      <a class="role-action role-action--secondary" href="fundacion.html">
+        <span class="role-action__title">Puedo ayudar</span>
+        <span class="role-action__subtitle">Llevar cosas o manos</span>
+      </a>
+    </nav>
 
     <main class="app-layout">
       <section class="panel panel--filters" id="filters"></section>

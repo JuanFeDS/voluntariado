@@ -1,9 +1,20 @@
 import "@/styles/main.css";
 import { supabase } from "@/services/supabaseClient";
 import { bindFormSubmit } from "@/utils/formSubmit";
+import { renderFormWizard } from "@/ui/formWizard";
 
 const form = document.getElementById("fundacion-form") as HTMLFormElement;
 const statusEl = document.getElementById("fundacion-status")!;
+
+renderFormWizard(form, {
+  1: () => {
+    const nombre = (form.elements.namedItem("nombre_organizacion") as HTMLInputElement).value.trim();
+    const direccion = (form.elements.namedItem("direccion") as HTMLInputElement).value.trim();
+    if (!nombre) return "Escribí el nombre de la organización o lugar.";
+    if (!direccion) return "Escribí la dirección.";
+    return null;
+  },
+});
 
 bindFormSubmit({
   form,

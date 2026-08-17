@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registrar punto de ayuda — Voluntariado Bogotá</title>
+    <title>Registrar punto de ayuda — Pega un Grito</title>
     <link rel="stylesheet" href="/src/styles/main.css" />
   </head>
   <body>
-    <header class="app-header">
-      <h1>Registrá tu fundación o punto de acopio</h1>
-      <p class="app-subtitle">
-        Para fundaciones, líderes sociales o puntos que necesiten voluntarios o donaciones.
-        <a href="index.html">Volver al mapa</a>
-      </p>
+    <header class="page-header">
+      <a class="page-header__back" href="index.html" aria-label="Volver al mapa">←</a>
+      <span class="page-header__title">Registrá tu fundación o punto de acopio</span>
     </header>
+    <p class="trust-strip">
+      Iniciativa ciudadana · no es una entidad oficial de emergencias · si hay riesgo de vida llama al <strong>123</strong>
+    </p>
 
     <main class="form-page">
       <p class="form-notice">
@@ -26,71 +26,99 @@
           <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" />
         </label>
 
-        <label class="form-field">
-          <span>Nombre de la organización o lugar *</span>
-          <input type="text" name="nombre_organizacion" required maxlength="200" />
-        </label>
+        <div class="wizard-progress" data-wizard-progress aria-hidden="true">
+          <span class="wizard-progress__bar"></span>
+          <span class="wizard-progress__bar"></span>
+          <span class="wizard-progress__bar"></span>
+        </div>
 
-        <label class="form-field">
-          <span>Dirección *</span>
-          <input type="text" name="direccion" required maxlength="300" placeholder="Calle 26 #62-47, Bogotá D.C" />
-        </label>
+        <section class="wizard-step" data-wizard-step="1">
+          <h2 class="wizard-step__title">¿Qué es y dónde está?</h2>
+          <p class="wizard-step__subtitle">Lo básico para ubicar el punto en el mapa.</p>
 
-        <label class="form-field">
-          <span>Localidad</span>
-          <input type="text" name="localidad" maxlength="100" placeholder="Engativá, Kennedy, Suba..." />
-        </label>
+          <label class="form-field">
+            <span>Nombre de la organización o lugar *</span>
+            <input type="text" name="nombre_organizacion" required maxlength="200" />
+          </label>
 
-        <label class="form-field">
-          <span>¿Necesitan voluntarios? *</span>
-          <select name="necesita_voluntarios" required>
-            <option value="si">Sí</option>
-            <option value="no" selected>No</option>
-            <option value="revisando">Revisando información</option>
-          </select>
-        </label>
+          <label class="form-field">
+            <span>Dirección *</span>
+            <input type="text" name="direccion" required maxlength="300" placeholder="Calle 26 #62-47, Bogotá D.C" />
+          </label>
 
-        <label class="form-field form-field--checkbox">
-          <input type="checkbox" name="necesita_donaciones" value="true" />
-          <span>Necesitan donaciones</span>
-        </label>
+          <label class="form-field">
+            <span>Localidad</span>
+            <input type="text" name="localidad" maxlength="100" placeholder="Engativá, Kennedy, Suba..." />
+          </label>
 
-        <label class="form-field">
-          <span>¿Qué tipo de donaciones?</span>
-          <input type="text" name="tipo_donaciones" maxlength="300" placeholder="Alimentos, ropa, agua, artículos para mascotas..." />
-        </label>
+          <label class="form-field">
+            <span>Horarios</span>
+            <input type="text" name="horarios" maxlength="200" placeholder="Lunes a viernes 8am-4pm" />
+          </label>
+        </section>
 
-        <label class="form-field">
-          <span>Horarios</span>
-          <input type="text" name="horarios" maxlength="200" placeholder="Lunes a viernes 8am-4pm" />
-        </label>
+        <section class="wizard-step" data-wizard-step="2" hidden>
+          <h2 class="wizard-step__title">¿Qué necesitan?</h2>
+          <p class="wizard-step__subtitle">Contanos si hace falta gente, donaciones, o las dos.</p>
 
-        <label class="form-field">
-          <span>Nombre de contacto</span>
-          <input type="text" name="contacto_nombre" maxlength="150" />
-        </label>
+          <label class="form-field">
+            <span>¿Necesitan voluntarios? *</span>
+            <select name="necesita_voluntarios" required>
+              <option value="si">Sí</option>
+              <option value="no" selected>No</option>
+              <option value="revisando">Revisando información</option>
+            </select>
+          </label>
 
-        <label class="form-field">
-          <span>Teléfono / WhatsApp de contacto</span>
-          <input type="tel" name="contacto_telefono" maxlength="50" />
-        </label>
+          <label class="chip-toggle">
+            <input type="checkbox" name="necesita_donaciones" value="true" />
+            <span>Necesitan donaciones</span>
+          </label>
 
-        <label class="form-field">
-          <span>Instagram</span>
-          <input type="url" name="instagram" maxlength="300" placeholder="https://instagram.com/..." />
-        </label>
+          <label class="form-field">
+            <span>¿Qué tipo de donaciones?</span>
+            <input type="text" name="tipo_donaciones" maxlength="300" placeholder="Alimentos, ropa, agua, artículos para mascotas..." />
+          </label>
+        </section>
 
-        <label class="form-field">
-          <span>Link de inscripción para voluntarios</span>
-          <input type="url" name="link_inscripcion" maxlength="500" />
-        </label>
+        <section class="wizard-step" data-wizard-step="3" hidden>
+          <h2 class="wizard-step__title">¿Cómo te contactan?</h2>
+          <p class="wizard-step__subtitle">Para que la gente pueda coordinar con vos.</p>
 
-        <label class="form-field">
-          <span>Notas</span>
-          <textarea name="notas" rows="4" maxlength="3000"></textarea>
-        </label>
+          <label class="form-field">
+            <span>Nombre de contacto</span>
+            <input type="text" name="contacto_nombre" maxlength="150" />
+          </label>
 
-        <button type="submit" class="form-submit">Enviar registro</button>
+          <label class="form-field">
+            <span>Teléfono / WhatsApp de contacto</span>
+            <input type="tel" name="contacto_telefono" maxlength="50" />
+          </label>
+
+          <label class="form-field">
+            <span>Instagram</span>
+            <input type="url" name="instagram" maxlength="300" placeholder="https://instagram.com/..." />
+          </label>
+
+          <label class="form-field">
+            <span>Link de inscripción para voluntarios</span>
+            <input type="url" name="link_inscripcion" maxlength="500" />
+          </label>
+
+          <label class="form-field">
+            <span>Notas</span>
+            <textarea name="notas" rows="4" maxlength="3000"></textarea>
+          </label>
+        </section>
+
+        <p class="wizard-error" data-wizard-error role="alert"></p>
+
+        <div class="wizard-nav">
+          <button type="button" class="wizard-nav__back" data-wizard-back hidden aria-label="Paso anterior">←</button>
+          <button type="button" class="form-submit wizard-nav__next" data-wizard-next>Continuar</button>
+          <button type="submit" class="form-submit wizard-nav__next" data-wizard-submit hidden>Enviar registro</button>
+        </div>
+
         <p id="fundacion-status" class="form-status" role="status"></p>
       </form>
     </main>

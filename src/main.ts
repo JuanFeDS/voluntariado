@@ -1,5 +1,5 @@
 import "@/styles/main.css";
-import type { HelpPoint, VolunteerFilter } from "@/types";
+import type { HelpPoint, PointFilter } from "@/types";
 import { loadHelpPoints, filterPoints } from "@/services/points";
 import { fetchAffectedZones } from "@/services/zoneMap";
 import { renderFilters } from "@/ui/filters";
@@ -19,7 +19,7 @@ async function init(): Promise<void> {
   const zoneToggleContainer = document.getElementById("zone-toggle")!;
 
   let allPoints: HelpPoint[] = [];
-  let activeFilter: VolunteerFilter = "todos";
+  let activeFilter: PointFilter = "todos";
 
   const mapController = renderMap(mapContainer);
   const viewToggleController = renderViewToggle(viewToggleContainer);

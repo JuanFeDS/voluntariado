@@ -16,6 +16,7 @@ interface FoundationRequestRow {
   notas: string | null;
   lat: number | null;
   lng: number | null;
+  created_at: string;
 }
 
 const VOLUNTEER_LABEL: Record<FoundationRequestRow["necesita_voluntarios"], string> = {
@@ -50,5 +51,6 @@ function rowToHelpPoint(row: FoundationRequestRow): HelpPoint {
     funcionesVoluntarios: "",
     lat: row.lat,
     lng: row.lng,
+    updatedAt: row.created_at,
   };
 }

@@ -1,6 +1,6 @@
 import type { HelpPoint } from "@/types";
 import { escapeHtml } from "@/utils/html";
-import { statusVariant, renderLinksHtml, hasCoords } from "@/utils/pointFormat";
+import { renderLinksHtml, hasCoords, pointTypeVariant, POINT_TYPE_LABEL, freshnessVariant, freshnessLabel } from "@/utils/pointFormat";
 
 export interface ListController {
   onSelect(handler: (point: HelpPoint) => void): void;
@@ -24,23 +24,24 @@ export function renderList(container: HTMLElement, points: HelpPoint[]): ListCon
 
   points.forEach((point) => {
     const item = document.createElement("li");
-    item.className = "point-card";
-    item.dataset.status = statusVariant(point.seNecesitanVoluntarios);
+    item.className = "point-row";
+    item.dataset.type = pointTypeVariant(point);
 
     item.innerHTML = `
-      <div class="point-card__header">
-        <h3>${escapeHtml(point.lugar)}</h3>
-        <span class="badge badge--${statusVariant(point.seNecesitanVoluntarios)}">
-          ${escapeHtml(point.seNecesitanVoluntarios || "Sin dato")}
-        </span>
+      <div class="point-row__head">
+        <span class="point-row__type">${POINT_TYPE_LABEL[pointTypeVariant(point)]}</span>
       </div>
-      <p class="point-card__address">${escapeHtml(point.direccion)}</p>
-      ${point.horarios ? `<p class="point-card__row"><strong>Horario:</strong> ${escapeHtml(point.horarios)}</p>` : ""}
-      ${point.funcionesVoluntarios ? `<p class="point-card__row"><strong>Funciones:</strong> ${escapeHtml(point.funcionesVoluntarios)}</p>` : ""}
-      ${point.notas ? `<p class="point-card__notes">${escapeHtml(point.notas)}</p>` : ""}
-      <p class="point-card__updated">Actualizado: ${escapeHtml(point.horaActualizacion || "sin dato")}</p>
+      <h3 class="point-row__title">${escapeHtml(point.lugar)}</h3>
+      <p class="point-row__address">${escapeHtml(point.direccion)}</p>
+      ${point.horarios ? `<p class="point-row__detail"><strong>Horario:</strong> ${escapeHtml(point.horarios)}</p>` : ""}
+      ${point.funcionesVoluntarios ? `<p class="point-row__detail"><strong>Funciones:</strong> ${escapeHtml(point.funcionesVoluntarios)}</p>` : ""}
+      ${point.notas ? `<p class="point-row__detail">${escapeHtml(point.notas)}</p>` : ""}
+      <div class="point-row__fresh" data-fresh="${freshnessVariant(point)}">
+        <span class="point-row__dot"></span>
+        <span>${escapeHtml(freshnessLabel(point))}</span>
+      </div>
       ${renderLinksHtml(point)}
-      ${hasCoords(point) ? `<button type="button" class="point-card__map-link">Ver en el mapa →</button>` : ""}
+      ${hasCoords(point) ? `<button type="button" class="point-row__map-link">Ver en el mapa →</button>` : ""}
     `;
 
     item.addEventListener("click", () => handlers.forEach((handler) => handler(point)));

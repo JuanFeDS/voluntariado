@@ -1,13 +1,14 @@
-import type { VolunteerFilter } from "@/types";
+import type { PointFilter } from "@/types";
 
 export interface FiltersController {
-  onChange(handler: (filter: VolunteerFilter) => void): void;
+  onChange(handler: (filter: PointFilter) => void): void;
 }
 
-const OPTIONS: { value: VolunteerFilter; label: string }[] = [
-  { value: "todos", label: "Todos" },
-  { value: "necesitan", label: "Necesitan voluntarios" },
-  { value: "revisando", label: "Revisando información" },
+const OPTIONS: { value: PointFilter; label: string }[] = [
+  { value: "todos", label: "Todo" },
+  { value: "acopio", label: "Acopio" },
+  { value: "pedidos", label: "Pedidos" },
+  { value: "manos", label: "Manos" },
 ];
 
 export function renderFilters(container: HTMLElement): FiltersController {
@@ -16,7 +17,7 @@ export function renderFilters(container: HTMLElement): FiltersController {
   const group = document.createElement("div");
   group.className = "filter-group";
   group.setAttribute("role", "radiogroup");
-  group.setAttribute("aria-label", "Filtrar por disponibilidad de voluntariado");
+  group.setAttribute("aria-label", "Filtrar por tipo de punto");
 
   const buttons = OPTIONS.map(({ value, label }) => {
     const button = document.createElement("button");
@@ -33,13 +34,13 @@ export function renderFilters(container: HTMLElement): FiltersController {
   buttons[0].classList.add("filter-button--active");
   container.appendChild(group);
 
-  const handlers: ((filter: VolunteerFilter) => void)[] = [];
+  const handlers: ((filter: PointFilter) => void)[] = [];
 
   group.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLButtonElement)) return;
 
-    const filter = target.dataset.value as VolunteerFilter;
+    const filter = target.dataset.value as PointFilter;
     buttons.forEach((button) => {
       const isActive = button === target;
       button.classList.toggle("filter-button--active", isActive);

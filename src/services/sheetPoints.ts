@@ -16,6 +16,7 @@ interface SheetPointRow {
   funciones_voluntarios: string;
   lat: number | null;
   lng: number | null;
+  synced_at: string;
 }
 
 export async function fetchSheetPoints(): Promise<HelpPoint[]> {
@@ -41,5 +42,6 @@ function rowToHelpPoint(row: SheetPointRow): HelpPoint {
     funcionesVoluntarios: row.funciones_voluntarios,
     lat: row.lat,
     lng: row.lng,
+    updatedAt: row.synced_at,
   };
 }

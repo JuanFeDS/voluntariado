@@ -1,4 +1,4 @@
-export type PointSource = "sheet" | "foundation";
+export type PointSource = "sheet" | "foundation" | "victim";
 
 export interface HelpPoint {
   id: string;
@@ -16,9 +16,11 @@ export interface HelpPoint {
   funcionesVoluntarios: string;
   lat: number | null;
   lng: number | null;
+  /** ISO. Mejor timestamp disponible para el semáforo de frescura (no es una "confirmación" real, es el mejor proxy que hay hoy). */
+  updatedAt: string | null;
 }
 
-export type VolunteerFilter = "todos" | "necesitan" | "revisando";
+export type PointFilter = "todos" | "acopio" | "pedidos" | "manos";
 
 export type RequestStatus = "pendiente" | "aprobado" | "rechazado";
 

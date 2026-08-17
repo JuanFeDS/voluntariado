@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import type { HelpPoint, MunicipioZoneCount } from "@/types";
 import { BOGOTA_CENTER } from "@/config";
 import { escapeHtml } from "@/utils/html";
-import { hasCoords, statusVariant, renderLinksHtml } from "@/utils/pointFormat";
+import { hasCoords, renderLinksHtml, pointTypeVariant, POINT_TYPE_LABEL } from "@/utils/pointFormat";
 
 // Icon.Default._getIconUrl antepone un imagePath auto-detectado del CSS
 // incluso cuando mergeOptions ya trae una URL absoluta, duplicando la ruta
@@ -105,9 +105,7 @@ function buildPopupContent(point: HelpPoint): string {
     <div class="map-info">
       <div class="map-info__header">
         <strong>${escapeHtml(point.lugar)}</strong>
-        <span class="badge badge--${statusVariant(point.seNecesitanVoluntarios)}">
-          ${escapeHtml(point.seNecesitanVoluntarios || "Sin dato")}
-        </span>
+        <span class="point-row__type">${POINT_TYPE_LABEL[pointTypeVariant(point)]}</span>
       </div>
       <p class="map-info__address">${escapeHtml(point.direccion)}</p>
       ${point.horarios ? `<p class="map-info__row"><strong>Horario:</strong> ${escapeHtml(point.horarios)}</p>` : ""}

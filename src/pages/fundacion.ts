@@ -21,6 +21,7 @@ bindFormSubmit({
   statusEl,
   successMessage: "¡Gracias! Tu registro quedó pendiente de revisión y pronto será visible en el mapa.",
   honeypotFieldName: "sitio_web",
+  successRedirect: "index.html",
   async submit(formData) {
     const { error } = await supabase.from("foundation_requests").insert({
       status: "pendiente",

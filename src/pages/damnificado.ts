@@ -16,10 +16,8 @@ renderFormWizard(form, {
   2: () => {
     const departamento = (form.elements.namedItem("departamento") as HTMLSelectElement).value;
     const municipio = (form.elements.namedItem("municipio") as HTMLInputElement).value.trim();
-    const direccion = (form.elements.namedItem("direccion_exacta") as HTMLInputElement).value.trim();
     if (!departamento) return "Seleccioná tu departamento.";
     if (!municipio) return "Escribí el municipio.";
-    if (!direccion) return "Escribí la dirección exacta.";
     return null;
   },
 });
@@ -29,6 +27,7 @@ bindFormSubmit({
   statusEl,
   successMessage: "¡Gracias! Tu solicitud quedó pendiente de revisión.",
   honeypotFieldName: "sitio_web",
+  successRedirect: "index.html",
   async submit(formData) {
     const tipoAyuda = formData.getAll("tipo_ayuda").join(", ");
     if (!tipoAyuda) {
@@ -43,7 +42,7 @@ bindFormSubmit({
       departamento: formData.get("departamento"),
       municipio: formData.get("municipio"),
       barrio_vereda: formData.get("barrio_vereda") || null,
-      direccion_exacta: formData.get("direccion_exacta"),
+      direccion_exacta: formData.get("direccion_exacta") || null,
       alcaldia_cercana: formData.get("alcaldia_cercana") || null,
       telefono_contacto: formData.get("telefono_contacto") || null,
       numero_personas_afectadas: numeroPersonas ? Number(numeroPersonas) : null,

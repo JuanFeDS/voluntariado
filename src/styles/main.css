@@ -145,11 +145,11 @@ a {
 }
 
 .site-header__mark {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: var(--acento);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
 .site-header__name {
@@ -679,6 +679,8 @@ a {
 .form-field input[type="tel"],
 .form-field input[type="url"],
 .form-field input[type="number"],
+.form-field input[type="email"],
+.form-field input[type="password"],
 .form-field select,
 .form-field textarea {
   border: 1.5px solid var(--line);

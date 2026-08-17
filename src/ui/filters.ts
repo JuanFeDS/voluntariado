@@ -8,7 +8,7 @@ const OPTIONS: { value: PointFilter; label: string }[] = [
   { value: "todos", label: "Todo" },
   { value: "acopio", label: "Acopio" },
   { value: "pedidos", label: "Pedidos" },
-  { value: "manos", label: "Manos" },
+  { value: "manos", label: "Asistencia/Voluntariado" },
 ];
 
 export function renderFilters(container: HTMLElement): FiltersController {

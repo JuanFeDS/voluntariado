@@ -325,8 +325,19 @@ a {
   overflow-y: auto;
 }
 
-.panel--map {
+/* El toggle de zonas vive en su propia barra FUERA del lienzo del mapa —
+   dentro, como overlay absoluto, terminaba tapándose feo con los popups
+   de Leaflet cuando un punto quedaba cerca de esa esquina. */
+.map-column {
   grid-area: map;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.panel--map {
+  flex: 1;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -335,11 +346,9 @@ a {
   min-height: 300px;
 }
 
-.zone-toggle-wrap {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 1000;
+.zone-toggle-bar {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .zone-toggle {
@@ -1002,13 +1011,13 @@ fieldset.form-field legend {
   }
 
   .panel--list,
-  .panel--map {
+  .map-column {
     grid-area: content;
     height: 100%;
     min-height: 0;
   }
 
-  .app-layout[data-active-view="list"] .panel--map {
+  .app-layout[data-active-view="list"] .map-column {
     display: none;
   }
 

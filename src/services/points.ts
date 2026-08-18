@@ -1,16 +1,14 @@
 import type { HelpPoint, PointFilter, VictimRequestPublic } from "@/types";
-import { fetchSheetPoints } from "@/services/sheetPoints";
 import { fetchFoundationRequests } from "@/services/foundationRequests";
 import { fetchVictimRequests } from "@/services/victimRequests";
 import { pointTypeVariant } from "@/utils/pointFormat";
 
 export async function loadHelpPoints(): Promise<HelpPoint[]> {
-  const [sheetPoints, foundationPoints, victimPoints] = await Promise.all([
-    fetchSheetPoints(),
+  const [foundationPoints, victimPoints] = await Promise.all([
     fetchFoundationRequests(),
     fetchVictimRequests().then((requests) => requests.map(victimRequestToHelpPoint)),
   ]);
-  return [...sheetPoints, ...foundationPoints, ...victimPoints];
+  return [...foundationPoints, ...victimPoints];
 }
 
 /**

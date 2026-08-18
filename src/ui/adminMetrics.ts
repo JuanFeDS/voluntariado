@@ -4,7 +4,13 @@ import { el } from "@/utils/dom";
 export function renderAdminMetrics(container: HTMLElement, metrics: AdminMetrics): void {
   container.innerHTML = "";
 
+  const lastSync = metrics.lastSheetSync
+    ? new Date(metrics.lastSheetSync).toLocaleString("es-CO")
+    : "Sin datos";
+
   const cards = [
+    { label: "Puntos de la hoja", value: String(metrics.sheetPointsCount) },
+    { label: "Última sincronización", value: lastSync },
     { label: "Fundaciones pendientes", value: String(metrics.foundationCounts.pendiente) },
     { label: "Fundaciones aprobadas", value: String(metrics.foundationCounts.aprobado) },
     { label: "Damnificados pendientes", value: String(metrics.victimCounts.pendiente) },

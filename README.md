@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Leaflet-1.9-199900?logo=leaflet&logoColor=white&style=flat-square" alt="Leaflet" />
 </p>
 
-**Pega un Grito** es una plataforma ciudadana que conecta necesidades humanitarias con quienes pueden ayudar: personas afectadas publican pedidos de ayuda y fundaciones/líderes sociales ofrecen puntos de acopio o voluntariado, todo geolocalizado en un mapa y lista filtrable en tiempo real. Nació como un MVP ligero (dos formularios públicos + moderación manual en Supabase Studio) y hoy extiende esa base con un panel de administración propio, mientras sigue una hoja de ruta hacia una especificación funcional más completa.
+**Pega un Grito** es una plataforma ciudadana que conecta necesidades humanitarias con quienes pueden ayudar: personas afectadas publican pedidos de ayuda y fundaciones/líderes sociales ofrecen puntos de acopio o voluntariado, todo geolocalizado en un mapa y lista filtrable en tiempo real. Nació como un MVP ligero (dos formularios públicos + moderación manual en Supabase Studio, más una hoja comunitaria cargada a mano en `sheet_points`) y hoy extiende esa base con un panel de administración propio, mientras sigue una hoja de ruta hacia una especificación funcional más completa.
 
 ---
 
@@ -73,9 +73,10 @@ src/
   types.ts                  tipos de dominio
   services/
     supabaseClient.ts        cliente de Supabase (browser, clave pública)
+    sheetPoints.ts            lee tabla sheet_points (ya no se sincroniza sola, se carga manual)
     foundationRequests.ts    lee foundation_requests (RLS ya filtra solo aprobados)
     victimRequests.ts        lee la vista victim_requests_public (sin datos sensibles)
-    points.ts                combina foundation_requests + victim_requests, aplica filtros
+    points.ts                combina sheet_points + foundation_requests + victim_requests, aplica filtros
     zoneMap.ts                agrega solicitudes de damnificados por municipio para el mapa de burbujas
     adminAuth.ts              login/logout y verificación de app_metadata.is_admin
     adminMetrics.ts           conteos por estado para el dashboard
@@ -100,7 +101,7 @@ src/
 index.html / fundacion.html / damnificado.html / admin.html   páginas (Vite multi-page)
 ```
 
-**Flujo de datos**: los formularios públicos insertan directo en Supabase con `status='pendiente'` (RLS lo garantiza, no solo el formulario). Un admin autenticado los aprueba/rechaza desde `admin.html`. Una vez aprobados, `points.ts` combina `foundation_requests` y `victim_requests_public` para alimentar la lista y el mapa públicos. En paralelo, el cron `geocode-municipios` geocodifica los municipios con solicitudes de damnificados (por zona, nunca por dirección exacta) para alimentar el mapa de burbujas de `zoneMap.ts`.
+**Flujo de datos**: los formularios públicos insertan directo en Supabase con `status='pendiente'` (RLS lo garantiza, no solo el formulario). Un admin autenticado los aprueba/rechaza desde `admin.html`. Una vez aprobados, `points.ts` combina `sheet_points` (cargada manualmente, ya no tiene sync automático) con `foundation_requests` y `victim_requests_public` para alimentar la lista y el mapa públicos. En paralelo, el cron `geocode-municipios` geocodifica los municipios con solicitudes de damnificados (por zona, nunca por dirección exacta) para alimentar el mapa de burbujas de `zoneMap.ts`.
 
 ---
 
@@ -110,6 +111,7 @@ Proyecto Supabase: `voluntariado-bogota` (región São Paulo, tier free).
 
 | Tabla / vista | Rol |
 |---|---|
+| `sheet_points` | Espejo de una hoja comunitaria de puntos de acopio/voluntariado. Ya no tiene sync automático (se eliminó el GitHub Action y el script que la sincronizaba desde CSV) — hoy se mantiene con carga manual directo en Supabase Studio. |
 | `foundation_requests` | Formulario de fundaciones/líderes sociales. Inserción pública forzada a `status='pendiente'`; solo visible públicamente si `status='aprobado'`. |
 | `victim_requests` | Formulario de damnificados. Inserción pública igual que arriba, pero **sin ningún `SELECT` público** — dirección exacta y teléfono solo se ven desde Supabase Studio. |
 | `victim_requests_public` | Vista sobre `victim_requests` que expone únicamente localidad aproximada, tipo de ayuda, urgencia y cantidad de personas de las filas aprobadas — sin coordenadas. |

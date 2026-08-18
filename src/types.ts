@@ -1,4 +1,4 @@
-export type PointSource = "foundation" | "victim";
+export type PointSource = "sheet" | "foundation" | "victim";
 
 export interface HelpPoint {
   id: string;
